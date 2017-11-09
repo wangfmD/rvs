@@ -1,0 +1,2284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Driver接口测试</title>
+    <meta name="generator" content="HTMLTestRunner 0.8.2"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    
+<style type="text/css" media="screen">
+body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 80%; }
+table       { font-size: 100%; }
+pre         { }
+
+/* -- heading ---------------------------------------------------------------------- */
+h1 {
+	font-size: 16pt;
+	color: gray;
+}
+.heading {
+    margin-top: 0ex;
+    margin-bottom: 1ex;
+}
+
+.heading .attribute {
+    margin-top: 1ex;
+    margin-bottom: 0;
+}
+
+.heading .description {
+    margin-top: 4ex;
+    margin-bottom: 6ex;
+}
+
+/* -- css div popup ------------------------------------------------------------------------ */
+a.popup_link {
+}
+
+a.popup_link:hover {
+    color: red;
+}
+
+.popup_window {
+    display: none;
+    position: relative;
+    left: 0px;
+    top: 0px;
+    /*border: solid #627173 1px; */
+    padding: 10px;
+    background-color: #E6E6D6;
+    font-family: "Lucida Console", "Courier New", Courier, monospace;
+    text-align: left;
+    font-size: 8pt;
+    width: 500px;
+}
+
+}
+/* -- report ------------------------------------------------------------------------ */
+# show_detail_line {
+    margin-top: 3ex;
+    margin-bottom: 1ex;
+}
+# result_table {
+    width: 80%;
+    border-collapse: collapse;
+    border: 1px solid #777;
+}
+# header_row {
+    font-weight: bold;
+    color: white;
+    background-color: #777;
+}
+# result_table td {
+    border: 1px solid #777;
+    padding: 2px;
+}
+# total_row  { font-weight: bold; }
+.passClass  { background-color: #6c6; }
+.failClass  { background-color: #c60; }
+.errorClass { background-color: #c00; }
+.passCase   { color: #6c6; }
+.failCase   { color: #c60; font-weight: bold; }
+.errorCase  { color: #c00; font-weight: bold; }
+.hiddenRow  { display: none; }
+.testcase   { margin-left: 2em; }
+
+
+/* -- ending ---------------------------------------------------------------------- */
+# ending {
+}
+
+</style>
+
+</head>
+<body>
+<script language="javascript" type="text/javascript"><!--
+output_list = Array();
+
+/* level - 0:Summary; 1:Failed; 2:All */
+function showCase(level) {
+    trs = document.getElementsByTagName("tr");
+    for (var i = 0; i < trs.length; i++) {
+        tr = trs[i];
+        id = tr.id;
+        if (id.substr(0,2) == 'ft') {
+            if (level < 1) {
+                tr.className = 'hiddenRow';
+            }
+            else {
+                tr.className = '';
+            }
+        }
+        if (id.substr(0,2) == 'pt') {
+            if (level > 1) {
+                tr.className = '';
+            }
+            else {
+                tr.className = 'hiddenRow';
+            }
+        }
+    }
+}
+
+
+function showClassDetail(cid, count) {
+    var id_list = Array(count);
+    var toHide = 1;
+    for (var i = 0; i < count; i++) {
+        tid0 = 't' + cid.substr(1) + '.' + (i+1);
+        tid = 'f' + tid0;
+        tr = document.getElementById(tid);
+        if (!tr) {
+            tid = 'p' + tid0;
+            tr = document.getElementById(tid);
+        }
+        id_list[i] = tid;
+        if (tr.className) {
+            toHide = 0;
+        }
+    }
+    for (var i = 0; i < count; i++) {
+        tid = id_list[i];
+        if (toHide) {
+            document.getElementById('div_'+tid).style.display = 'none'
+            document.getElementById(tid).className = 'hiddenRow';
+        }
+        else {
+            document.getElementById(tid).className = '';
+        }
+    }
+}
+
+
+function showTestDetail(div_id){
+    var details_div = document.getElementById(div_id)
+    var displayState = details_div.style.display
+    // alert(displayState)
+    if (displayState != 'block' ) {
+        displayState = 'block'
+        details_div.style.display = 'block'
+    }
+    else {
+        details_div.style.display = 'none'
+    }
+}
+
+
+function html_escape(s) {
+    s = s.replace(/&/g,'&amp;');
+    s = s.replace(/</g,'&lt;');
+    s = s.replace(/>/g,'&gt;');
+    return s;
+}
+
+/* obsoleted by detail in <div>
+function showOutput(id, name) {
+    var w = window.open("", //url
+                    name,
+                    "resizable,scrollbars,status,width=800,height=450");
+    d = w.document;
+    d.write("<pre>");
+    d.write(html_escape(output_list[id]));
+    d.write("\n");
+    d.write("<a href='javascript:window.close()'>close</a>\n");
+    d.write("</pre>\n");
+    d.close();
+}
+*/
+--></script>
+
+<div class='heading'>
+<h1>Driver接口测试</h1>
+<p class='attribute'><strong>Start Time:</strong> 2017-10-10 17:12:18</p>
+<p class='attribute'><strong>Duration:</strong> 0:00:00.000011</p>
+<p class='attribute'><strong>Status:</strong> Pass 58 Failure 12</p>
+<p class='attribute'><strong>Test Project Server:</strong> 10.1.41.20</p>
+<p class='attribute'><strong>Project Version:</strong> middleclient_V2.01.001.A.002</p>
+
+<p class='description'>用例执行情况：</p>
+</div>
+
+
+
+<p id='show_detail_line'>Show
+<a href='javascript:showCase(0)'>Summary</a>
+<a href='javascript:showCase(1)'>Failed</a>
+<a href='javascript:showCase(2)'>All</a>
+</p>
+<table id='result_table'>
+<colgroup>
+<col align='left' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+</colgroup>
+<tr id='header_row'>
+    <td>Test Group/Test case</td>
+    <td>Count</td>
+    <td>Pass</td>
+    <td>Fail</td>
+    <td>Error</td>
+    <td>View</td>
+</tr>
+
+<tr class='failClass'>
+    <td>设备dirver接口测试</td>
+    <td>31</td>
+    <td>30</td>
+    <td>1</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c1',31)">Detail</a></td>
+</tr>
+
+<tr id='pt1.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>获取设备详情</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.1')" >
+        pass</a>
+
+    <div id='div_pt1.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.1: {'UPDATE_TIME': datetime.datetime(2017, 10, 10, 17, 7, 31)}
+1, [Tue Oct 10 17:09:40 2017] called: equipment_detail  para:{'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/equipment_detail', 'status': '200', u'success': u'true'}
+5, action equipment_detail: http://10.1.41.20/interactbusiness/api/equip/equipment_detail
+6, equipment_detail: 获取设备详情 test result:{'is_ok': False, 'withoutkey': [], 'errorvalue': [{'': ''}]}
+6,operatetype: 获取设备详情:{'is_ok': True, 'correctvalue': [], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft1.2' class='none'>
+    <td class='failCase'><div class='testcase'>获取当前设备和课程状态</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.2')" >
+        fail</a>
+
+    <div id='div_ft1.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft1.2: lesson_status
+1, [Tue Oct 10 17:09:45 2017] called: get_status  para:{'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/get_status', 'status': '200', u'success': u'true'}
+5, action get_status: http://10.1.41.20/interactbusiness/api/equip/get_status
+6, get_status: 获取当前设备和课程状态 test result:{'is_ok': False, 'withoutkey': [], 'errorvalue': [{'ind': 'lesson_status'}]}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>设置主画面显示：老师全景</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.3')" >
+        pass</a>
+
+    <div id='div_pt1.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.3: tq
+1, [Tue Oct 10 17:09:50 2017] called: conference_screen_choose  para:{'major': 'tq', 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/conference_screen_choose', 'status': '200', u'success': u'true'}
+5, action conference_screen_choose: http://10.1.41.20/interactbusiness/api/equip/conference_screen_choose
+6, conference_screen_choose: 设置主画面显示：老师全景 test result:{'is_ok': True, 'correctvalue': [{'manualRole': 'tq'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>设置主画面显示：老师特写+板书</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.4')" >
+        pass</a>
+
+    <div id='div_pt1.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.4: tt
+1, [Tue Oct 10 17:09:55 2017] called: conference_screen_choose  para:{'major': 'tt', 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/conference_screen_choose', 'status': '200', u'success': u'true'}
+5, action conference_screen_choose: http://10.1.41.20/interactbusiness/api/equip/conference_screen_choose
+6, conference_screen_choose: 设置主画面显示：老师特写+板书 test result:{'is_ok': True, 'correctvalue': [{'manualRole': 'tt'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.5' class='hiddenRow'>
+    <td class='none'><div class='testcase'>设置主画面显示：学生全景</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.5')" >
+        pass</a>
+
+    <div id='div_pt1.5' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.5').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.5: sq
+1, [Tue Oct 10 17:10:00 2017] called: conference_screen_choose  para:{'major': 'sq', 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/conference_screen_choose', 'status': '200', u'success': u'true'}
+5, action conference_screen_choose: http://10.1.41.20/interactbusiness/api/equip/conference_screen_choose
+6, conference_screen_choose: 设置主画面显示：学生全景 test result:{'is_ok': True, 'correctvalue': [{'manualRole': 'sq'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.6' class='hiddenRow'>
+    <td class='none'><div class='testcase'>设置主画面显示：学生特写</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.6')" >
+        pass</a>
+
+    <div id='div_pt1.6' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.6').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.6: st
+1, [Tue Oct 10 17:10:05 2017] called: conference_screen_choose  para:{'major': 'st', 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'para': 'st'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/conference_screen_choose', 'status': '200', u'success': u'true'}
+5, action conference_screen_choose: http://10.1.41.20/interactbusiness/api/equip/conference_screen_choose
+6, conference_screen_choose: 设置主画面显示：学生特写 test result:{'is_ok': True, 'correctvalue': [{'manualRole': 'st'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.7' class='hiddenRow'>
+    <td class='none'><div class='testcase'>设置主画面显示：课件</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.7')" >
+        pass</a>
+
+    <div id='div_pt1.7' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.7').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.7: vga
+1, [Tue Oct 10 17:10:10 2017] called: conference_screen_choose  para:{'major': 'vga', 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/conference_screen_choose', 'status': '200', u'success': u'true'}
+5, action conference_screen_choose: http://10.1.41.20/interactbusiness/api/equip/conference_screen_choose
+6, conference_screen_choose: 设置主画面显示：课件 test result:{'is_ok': True, 'correctvalue': [{'manualRole': 'vga'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.8' class='hiddenRow'>
+    <td class='none'><div class='testcase'>老师摄像机自动跟踪关：手动跟踪</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.8')" >
+        pass</a>
+
+    <div id='div_pt1.8' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.8').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.8: 1
+1, [Tue Oct 10 17:10:16 2017] called: conference_tt_track_mode  para:{'ttTrackMode': 1, 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/conference_tt_track_mode', 'status': '200', u'success': u'true'}
+5, action conference_tt_track_mode: http://10.1.41.20/interactbusiness/api/equip/conference_tt_track_mode
+6, conference_tt_track_mode: 老师摄像机自动跟踪关：手动跟踪 test result:{'is_ok': True, 'correctvalue': [{'ttTrackMode': '1'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.9' class='hiddenRow'>
+    <td class='none'><div class='testcase'>老师摄像机自动跟踪关：自动跟踪</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.9')" >
+        pass</a>
+
+    <div id='div_pt1.9' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.9').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.9: 0
+1, [Tue Oct 10 17:10:21 2017] called: conference_tt_track_mode  para:{'ttTrackMode': 0, 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/conference_tt_track_mode', 'status': '200', u'success': u'true'}
+5, action conference_tt_track_mode: http://10.1.41.20/interactbusiness/api/equip/conference_tt_track_mode
+6, conference_tt_track_mode: 老师摄像机自动跟踪关：自动跟踪 test result:{'is_ok': True, 'correctvalue': [{'ttTrackMode': '0'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.10' class='hiddenRow'>
+    <td class='none'><div class='testcase'>学生摄像机自动跟踪关：自动跟踪</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.10')" >
+        pass</a>
+
+    <div id='div_pt1.10' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.10').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.10: 1
+1, [Tue Oct 10 17:10:26 2017] called: conference_st_track_mode  para:{'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'sttrackmode': 1}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/conference_st_track_mode', 'status': '200', u'success': u'true'}
+5, action conference_st_track_mode: http://10.1.41.20/interactbusiness/api/equip/conference_st_track_mode
+6, conference_st_track_mode: 学生摄像机自动跟踪关：自动跟踪 test result:{'is_ok': True, 'correctvalue': [{'stTrackMode': '1'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.11' class='hiddenRow'>
+    <td class='none'><div class='testcase'>学生摄像机自动跟踪关：自动跟踪</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.11')" >
+        pass</a>
+
+    <div id='div_pt1.11' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.11').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.11: 0
+1, [Tue Oct 10 17:10:31 2017] called: conference_st_track_mode  para:{'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'sttrackmode': 0}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/conference_st_track_mode', 'status': '200', u'success': u'true'}
+5, action conference_st_track_mode: http://10.1.41.20/interactbusiness/api/equip/conference_st_track_mode
+6, conference_st_track_mode: 学生摄像机自动跟踪关：自动跟踪 test result:{'is_ok': True, 'correctvalue': [{'stTrackMode': '0'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.12' class='hiddenRow'>
+    <td class='none'><div class='testcase'>录制模式:电影</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.12')" >
+        pass</a>
+
+    <div id='div_pt1.12' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.12').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.12: 0
+1, [Tue Oct 10 17:10:36 2017] called: fine_rec_mode  para:{'recmode': 0, 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'outerLive': '0', 'recordTime': '-1', 'recStatus': '0', 'recordMode': '0', 'innerLive': '1', 'ind': 'task_status'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/fine_rec_mode', 'status': '200', u'success': u'true'}
+5, action fine_rec_mode: http://10.1.41.20/interactbusiness/api/equip/fine_rec_mode
+6, fine_rec_mode: 录制模式:电影 test result:{'is_ok': True, 'correctvalue': [{'recordMode': '0'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.13' class='hiddenRow'>
+    <td class='none'><div class='testcase'>录制模式:资源</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.13')" >
+        pass</a>
+
+    <div id='div_pt1.13' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.13').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.13: 1
+1, [Tue Oct 10 17:10:41 2017] called: fine_rec_mode  para:{'recmode': '1', 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'outerLive': '0', 'recordTime': '-1', 'recStatus': '0', 'recordMode': '1', 'innerLive': '1', 'ind': 'task_status'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/fine_rec_mode', 'status': '200', u'success': u'true'}
+5, action fine_rec_mode: http://10.1.41.20/interactbusiness/api/equip/fine_rec_mode
+6, fine_rec_mode: 录制模式:资源 test result:{'is_ok': True, 'correctvalue': [{'recordMode': '1'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.14' class='hiddenRow'>
+    <td class='none'><div class='testcase'>录制模式:电影+资源</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.14')" >
+        pass</a>
+
+    <div id='div_pt1.14' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.14').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.14: 2
+1, [Tue Oct 10 17:10:46 2017] called: fine_rec_mode  para:{'recmode': '2', 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'outerLive': '0', 'recordTime': '-1', 'recStatus': '0', 'recordMode': '2', 'innerLive': '1', 'ind': 'task_status'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/fine_rec_mode', 'status': '200', u'success': u'true'}
+5, action fine_rec_mode: http://10.1.41.20/interactbusiness/api/equip/fine_rec_mode
+6, fine_rec_mode: 录制模式:电影+资源 test result:{'is_ok': True, 'correctvalue': [{'recordMode': '2'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.15' class='hiddenRow'>
+    <td class='none'><div class='testcase'>静音开</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.15')" >
+        pass</a>
+
+    <div id='div_pt1.15' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.15').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.15: 1
+1, [Tue Oct 10 17:10:51 2017] called: fine_mute  para:{'ind': 'audio_config', 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'mute': '1'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/fine_mute', 'status': '200', u'success': u'true'}
+5, action fine_mute: http://10.1.41.20/interactbusiness/api/equip/fine_mute
+6, fine_mute: 静音开 test result:{'is_ok': True, 'correctvalue': [{'mute': '1'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.16' class='hiddenRow'>
+    <td class='none'><div class='testcase'>静音关</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.16')" >
+        pass</a>
+
+    <div id='div_pt1.16' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.16').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.16: 0
+1, [Tue Oct 10 17:10:56 2017] called: fine_mute  para:{'ind': 'audio_config', 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'mute': '0'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/fine_mute', 'status': '200', u'success': u'true'}
+5, action fine_mute: http://10.1.41.20/interactbusiness/api/equip/fine_mute
+6, fine_mute: 静音关 test result:{'is_ok': True, 'correctvalue': [{'mute': '0'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.17' class='hiddenRow'>
+    <td class='none'><div class='testcase'>自动跟踪关闭</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.17')" >
+        pass</a>
+
+    <div id='div_pt1.17' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.17').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.17: 1
+1, [Tue Oct 10 17:11:01 2017] called: fine_track_mode  para:{'ind': 'track_status', 'trackMode': '1', 'ttTrackMode': '1', 'stTrackMode': '1', 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/fine_track_mode', 'status': '200', u'success': u'true'}
+5, action fine_track_mode: http://10.1.41.20/interactbusiness/api/equip/fine_track_mode
+6, fine_track_mode: 自动跟踪关闭 test result:{'is_ok': True, 'correctvalue': [{'trackMode': '1'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.18' class='hiddenRow'>
+    <td class='none'><div class='testcase'>自动跟踪打开</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.18')" >
+        pass</a>
+
+    <div id='div_pt1.18' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.18').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.18: 0
+1, [Tue Oct 10 17:11:06 2017] called: fine_track_mode  para:{'ttTrackMode': '0', 'stTrackMode': '0', 'trackMode': '0', 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'ind': 'track_status', 'operatetype': u' \u81ea\u52a8\u8ddf\u8e2a\u6253\u5f00'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/fine_track_mode', 'status': '200', u'success': u'true'}
+5, action fine_track_mode: http://10.1.41.20/interactbusiness/api/equip/fine_track_mode
+6, fine_track_mode: 自动跟踪打开 test result:{'is_ok': True, 'correctvalue': [{'trackMode': '0'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.19' class='hiddenRow'>
+    <td class='none'><div class='testcase'>设置标题</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.19')" >
+        pass</a>
+
+    <div id='div_pt1.19' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.19').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.19: 11111111122
+1, [Tue Oct 10 17:11:11 2017] called: fine_video_mask  para:{'ind': 'video_mask', 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'titleinfo': '11111111122', 'subTitle': '11111111122', 'para': '11111111122'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/fine_video_mask', 'status': '200', u'success': u'true'}
+5, action fine_video_mask: http://10.1.41.20/interactbusiness/api/equip/fine_video_mask
+6, fine_video_mask: 设置标题 test result:{'is_ok': True, 'correctvalue': [{'subTitle': '11111111122'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.20' class='hiddenRow'>
+    <td class='none'><div class='testcase'>本地直播开</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.20')" >
+        pass</a>
+
+    <div id='div_pt1.20' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.20').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.20: 1
+1, [Tue Oct 10 17:11:16 2017] called: fine_live_on  para:{'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'outerLive': '0', 'recordTime': '767', 'recStatus': '1', 'recordMode': '2', 'innerLive': '1', 'ind': 'task_status'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/fine_live_on', 'status': '200', u'success': u'true'}
+5, action fine_live_on: http://10.1.41.20/interactbusiness/api/equip/fine_live_on
+6, fine_live_on: 本地直播开 test result:{'is_ok': True, 'correctvalue': [{'innerLive': '1'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.21' class='hiddenRow'>
+    <td class='none'><div class='testcase'>本地直播关</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.21')" >
+        pass</a>
+
+    <div id='div_pt1.21' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.21').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.21: 0
+1, [Tue Oct 10 17:11:22 2017] called: fine_live_off  para:{'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'outerLive': '0', 'recordTime': '817', 'recStatus': '1', 'recordMode': '2', 'innerLive': '0', 'ind': 'task_status'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/fine_live_off', 'status': '200', u'success': u'true'}
+5, action fine_live_off: http://10.1.41.20/interactbusiness/api/equip/fine_live_off
+6, fine_live_off: 本地直播关 test result:{'is_ok': True, 'correctvalue': [{'innerLive': '0'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.22' class='hiddenRow'>
+    <td class='none'><div class='testcase'>精品三分屏:4</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.22')" >
+        pass</a>
+
+    <div id='div_pt1.22' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.22').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.22: jp_ppP
+1, [Tue Oct 10 17:11:27 2017] called: fine_split  para:{'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'splitPolicy': 'jp_ppP', 'policyid': '4'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/fine_split', 'status': '200', u'success': u'true'}
+5, action fine_split: http://10.1.41.20/interactbusiness/api/equip/fine_split
+6, fine_split: 精品三分屏:4 test result:{'is_ok': True, 'correctvalue': [{'splitPolicy': 'jp_ppP'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.23' class='hiddenRow'>
+    <td class='none'><div class='testcase'>精品学生:VGA 5</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.23')" >
+        pass</a>
+
+    <div id='div_pt1.23' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.23').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.23: jp_PP_SV
+1, [Tue Oct 10 17:11:32 2017] called: fine_split  para:{'splitPolicy': 'jp_PP_SV', 'manualRole': '-1', 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'pipPos': 'lu', 'styl': '5', 'policyid': '5', 'ind': 'pic_status'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/fine_split', 'status': '200', u'success': u'true'}
+5, action fine_split: http://10.1.41.20/interactbusiness/api/equip/fine_split
+6, fine_split: 精品学生:VGA 5 test result:{'is_ok': True, 'correctvalue': [{'splitPolicy': 'jp_PP_SV'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.24' class='hiddenRow'>
+    <td class='none'><div class='testcase'>精品三分屏:4</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.24')" >
+        pass</a>
+
+    <div id='div_pt1.24' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.24').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.24: jp_ppP
+1, [Tue Oct 10 17:11:37 2017] called: fine_split  para:{'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'splitPolicy': 'jp_ppP', 'policyid': '4'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/fine_split', 'status': '200', u'success': u'true'}
+5, action fine_split: http://10.1.41.20/interactbusiness/api/equip/fine_split
+6, fine_split: 精品三分屏:4 test result:{'is_ok': True, 'correctvalue': [{'splitPolicy': 'jp_ppP'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.25' class='hiddenRow'>
+    <td class='none'><div class='testcase'>精品单屏:6</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.25')" >
+        pass</a>
+
+    <div id='div_pt1.25' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.25').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.25: jp_single
+1, [Tue Oct 10 17:11:42 2017] called: fine_split  para:{'splitPolicy': 'jp_single', 'manualRole': '-1', 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'pipPos': 'lu', 'styl': '6', 'policyid': '6', 'ind': 'pic_status'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/fine_split', 'status': '200', u'success': u'true'}
+5, action fine_split: http://10.1.41.20/interactbusiness/api/equip/fine_split
+6, fine_split: 精品单屏:6 test result:{'is_ok': True, 'correctvalue': [{'splitPolicy': 'jp_single'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.26' class='hiddenRow'>
+    <td class='none'><div class='testcase'>精品老师+VGA(画中画):7</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.26')" >
+        pass</a>
+
+    <div id='div_pt1.26' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.26').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.26: jp_Pp_TV
+1, [Tue Oct 10 17:11:47 2017] called: fine_split  para:{'splitPolicy': 'jp_Pp_TV', 'manualRole': '-1', 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'pipPos': 'lu', 'styl': '7', 'policyid': '7', 'ind': 'pic_status'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/fine_split', 'status': '200', u'success': u'true'}
+5, action fine_split: http://10.1.41.20/interactbusiness/api/equip/fine_split
+6, fine_split: 精品老师+VGA(画中画):7 test result:{'is_ok': True, 'correctvalue': [{'splitPolicy': 'jp_Pp_TV'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.27' class='hiddenRow'>
+    <td class='none'><div class='testcase'>精品老师+VGA(左右):8 </div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.27')" >
+        pass</a>
+
+    <div id='div_pt1.27' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.27').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.27: jp_PP_TV
+1, [Tue Oct 10 17:11:52 2017] called: fine_split  para:{'splitPolicy': 'jp_PP_TV', 'manualRole': '-1', 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'pipPos': 'lu', 'styl': '8', 'policyid': '8', 'ind': 'pic_status'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/fine_split', 'status': '200', u'success': u'true'}
+5, action fine_split: http://10.1.41.20/interactbusiness/api/equip/fine_split
+6, fine_split: 精品老师+VGA(左右):8  test result:{'is_ok': True, 'correctvalue': [{'splitPolicy': 'jp_PP_TV'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.28' class='hiddenRow'>
+    <td class='none'><div class='testcase'>精品老师+学生(画中画):9 </div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.28')" >
+        pass</a>
+
+    <div id='div_pt1.28' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.28').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.28: jp_Pp_TS
+1, [Tue Oct 10 17:11:57 2017] called: fine_split  para:{'splitPolicy': 'jp_Pp_TS', 'manualRole': '-1', 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'pipPos': 'lu', 'styl': '9', 'policyid': '9', 'ind': 'pic_status'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/fine_split', 'status': '200', u'success': u'true'}
+5, action fine_split: http://10.1.41.20/interactbusiness/api/equip/fine_split
+6, fine_split: 精品老师+学生(画中画):9  test result:{'is_ok': True, 'correctvalue': [{'splitPolicy': 'jp_Pp_TS'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.29' class='hiddenRow'>
+    <td class='none'><div class='testcase'>精品老师+学生(左右):10</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.29')" >
+        pass</a>
+
+    <div id='div_pt1.29' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.29').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.29: jp_PP_TS
+1, [Tue Oct 10 17:12:02 2017] called: fine_split  para:{'splitPolicy': 'jp_PP_TS', 'manualRole': '-1', 'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'pipPos': 'lu', 'styl': '10', 'policyid': '10', 'ind': 'pic_status'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/fine_split', 'status': '200', u'success': u'true'}
+5, action fine_split: http://10.1.41.20/interactbusiness/api/equip/fine_split
+6, fine_split: 精品老师+学生(左右):10 test result:{'is_ok': True, 'correctvalue': [{'splitPolicy': 'jp_PP_TS'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.30' class='hiddenRow'>
+    <td class='none'><div class='testcase'>停止录制停止</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.30')" >
+        pass</a>
+
+    <div id='div_pt1.30' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.30').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.30: 0
+1, [Tue Oct 10 17:12:07 2017] called: stop_rec  para:{'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'outerLive': '0', 'recordTime': '-1', 'recStatus': '0', 'recordMode': '2', 'innerLive': '1', 'ind': 'task_status'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/stop_rec', 'status': '200', u'success': u'true'}
+5, action stop_rec: http://10.1.41.20/interactbusiness/api/equip/stop_rec
+6, stop_rec: 停止录制停止 test result:{'is_ok': True, 'correctvalue': [{'recStatus': '0'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.31' class='hiddenRow'>
+    <td class='none'><div class='testcase'>开始录制开始</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.31')" >
+        pass</a>
+
+    <div id='div_pt1.31' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.31').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.31: 1
+1, [Tue Oct 10 17:12:12 2017] called: start_rec  para:{'equipmentid': 'b3b10c05-2cb9-49fe-b45d-eb29ef6e3abf', 'outerLive': '0', 'recordTime': '0', 'recStatus': '1', 'recordMode': '2', 'innerLive': '1', 'ind': 'task_status'}
+2, http request response result:{'url': u'http://10.1.41.20/interactbusiness/api/equip/start_rec', 'status': '200', u'success': u'true'}
+5, action start_rec: http://10.1.41.20/interactbusiness/api/equip/start_rec
+6, start_rec: 开始录制开始 test result:{'is_ok': True, 'correctvalue': [{'recStatus': '1'}], 'withoutkey': [], 'errorvalue': []}
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='failClass'>
+    <td>互动课功能测试</td>
+    <td>39</td>
+    <td>28</td>
+    <td>11</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c2',39)">Detail</a></td>
+</tr>
+
+<tr id='ft2.1' class='none'>
+    <td class='failCase'><div class='testcase'>checkMCU->checkLessonMcus</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft2.1')" >
+        fail</a>
+
+    <div id='div_ft2.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft2.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft2.1: 1, checkMCU-&gt;checkLessonMcus
+2, Lesson operate req args: f0bbdfd1-a64a-45e8-84ff-33f95d4c38df
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'failed', 'desc': 'check failed'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>开课->startLesson</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.2')" >
+        pass</a>
+
+    <div id='div_pt2.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.2: 1, 开课-&gt;startLesson
+2, Lesson operate req args: lessonId=f0bbdfd1-a64a-45e8-84ff-33f95d4c38df&amp;recordProfile={"autoSwitch": "0", "classInfo": "f0bbdfd1-a64a-45e8-84ff-33f95d4c38df", "className": "hdk", "classSubject": "\u8bed\u6587", "classroomid": "94378671-d747-44ad-af4f-62548cdad777", "conferenceid": "0001", "confname": null, "confpasswd": null, "ftpServerHost": null, "ftpServerPassWord": null, "ftpServerPort": null, "ftpServerUserName": null, "gradeName": "\u4e00\u5e74\u7ea7", "interactProfile": {"automute": 1, "contentbandwidth": "HiResGraphics", "contentprotocol": "h.264_dynamic", "contentquality": null, "contentsetting": null, "createtime": 1505357265000, "displayname": null, "enableiframe": null, "encryption": 0, "isCloseTracking": null, "isContentFs": 0, "isFhcContent": null, "isMoren": 1, "isMute": null, "isSeedShuangliu": null, "isSpeakLayout": 1, "islunxun": null, "lecturemode": 1, "liveDistinguishabilityHd": "720", "liveDistinguishabilitySd": "480", "liveDistinguishabilityUd": "1080", "liveFramesHd": null, "liveFramesSd": null, "liveFramesUd": null, "liveIsLive": "0", "liveStreamHd": "1024", "liveStreamSd": "512", "liveStreamUd": "2048", "liveUrlHd": null, "liveUrlSd": null, "liveUrlUd": null, "liveplatstrategy": "hd", "lpr": 0, "mBgcolor": null, "mBgtrans": null, "mColor": null, "mContent": null, "mDisplayspeed": null, "mDisplaytimes": null, "mEnable": null, "mFontsize": null, "mVerticalposition": null, "meetingPattern": "CP(\u5206\u5c4f)", "name": "720P", "platMark": "6e0db8e0-675e-4789-8131-8336dcdb18bb", "profileType": "beab33b2-ba99-4b4e-b754-802211104919", "rate": "1024", "rdDistinguishability": "720", "rdFrames": null, "rdFtpurl": null, "rdIsSubtitles": "1", "rdIsTranscribe": null, "rdIsUpload": "0", "rdPattern": "\u7535\u5f71+\u8d44\u6e90", "rdSltranscribefs": null, "rdSplitScreen": "3", "rdStream": "1024", "sBgcolor": null, "sBgtrans": null, "sColor": null, "sDisplaymode": "2", "sFontsize": null, "sHorizontalposition": null, "sVerticalposition": null, "samemode": null, "simplemode": null, "status": 1, "uuid": "0622f8f0-8392-44e1-ae0e-7dddbabfff49", "videoautolayout": 1, "videoautoscanlnterval": "10", "videolayout": "0", "videoresolution": "720", "voiceTime": "10", "vrdFchoose": null, "vrdIsParenttracking": "1", "vrdIsSeedtracking": "1", "vrdZchoose": null}, "lessonid": "f0bbdfd1-a64a-45e8-84ff-33f95d4c38df", "lessonname": "hdk", "lessontype": "60dbeed6-7851-4e2e-a52e-339c2f19bc21", "liveUrl": null, "livetelecast": "0", "schoolName": "\u90d1\u5dde\u4e00\u4e2d", "teacherName": "\u5f20\u8001\u5e08", "times": 40}&amp;endProfile={"empty": false, "pageIndex": 1, "pageSize": 1, "restCount": 0, "rows": [{"automute": null, "contentbandwidth": null, "contentprotocol": null, "contentquality": null, "contentsetting": null, "createtime": 1505357265000, "displayname": null, "enableiframe": null, "encryption": null, "isCloseTracking": null, "isContentFs": 0, "isFhcContent": null, "isMoren": 1, "isMute": null, "isSeedShuangliu": null, "isSpeakLayout": null, "islunxun": null, "lecturemode": null, "liveDistinguishabilityHd": null, "liveDistinguishabilitySd": null, "liveDistinguishabilityUd": null, "liveFramesHd": null, "liveFramesSd": null, "liveFramesUd": null, "liveIsLive": "0", "liveStreamHd": null, "liveStreamSd": null, "liveStreamUd": null, "liveUrlHd": null, "liveUrlSd": "1", "liveUrlUd": null, "liveplatstrategy": null, "lpr": null, "mBgcolor": null, "mBgtrans": null, "mColor": null, "mContent": "1", "mDisplayspeed": "1", "mDisplaytimes": "0", "mEnable": null, "mFontsize": null, "mVerticalposition": null, "meetingPattern": null, "name": "\u4e0b\u8bfe\u6a21\u677f", "platMark": "6e0db8e0-675e-4789-8131-8336dcdb18bb", "profileType": "f2439004-2472-412e-a951-5f72769965a6", "rate": null, "rdDistinguishability": null, "rdFrames": null, "rdFtpurl": null, "rdIsSubtitles": "2", "rdIsTranscribe": "0", "rdIsUpload": "0", "rdPattern": "\u7535\u5f71+\u8d44\u6e90", "rdSltranscribefs": null, "rdSplitScreen": "6", "rdStream": null, "sBgcolor": null, "sBgtrans": "1", "sColor": null, "sDisplaymode": null, "sFontsize": null, "sHorizontalposition": null, "sVerticalposition": null, "samemode": null, "simplemode": null, "status": 1, "uuid": "8b013f7a-726b-4d44-847e-fd56c75f7f39", "videoautolayout": null, "videoautoscanlnterval": null, "videolayout": null, "videoresolution": null, "voiceTime": null, "vrdFchoose": null, "vrdIsParenttracking": "0", "vrdIsSeedtracking": null, "vrdZchoose": null}], "totalPage": 1, "totalRows": 1}&amp;listenEndProfile{"empty": false, "pageIndex": 1, "pageSize": 1, "restCount": 0, "rows": [{"automute": null, "contentbandwidth": null, "contentprotocol": null, "contentquality": null, "contentsetting": null, "createtime": 1505357265000, "displayname": null, "enableiframe": null, "encryption": null, "isCloseTracking": null, "isContentFs": 0, "isFhcContent": null, "isMoren": 1, "isMute": null, "isSeedShuangliu": null, "isSpeakLayout": null, "islunxun": null, "lecturemode": null, "liveDistinguishabilityHd": null, "liveDistinguishabilitySd": null, "liveDistinguishabilityUd": null, "liveFramesHd": null, "liveFramesSd": null, "liveFramesUd": null, "liveIsLive": "0", "liveStreamHd": null, "liveStreamSd": null, "liveStreamUd": null, "liveUrlHd": null, "liveUrlSd": "1", "liveUrlUd": null, "liveplatstrategy": null, "lpr": null, "mBgcolor": null, "mBgtrans": null, "mColor": null, "mContent": "1", "mDisplayspeed": "1", "mDisplaytimes": "0", "mEnable": null, "mFontsize": null, "mVerticalposition": null, "meetingPattern": null, "name": "\u4e0b\u8bfe\u6a21\u677f", "platMark": "6e0db8e0-675e-4789-8131-8336dcdb18bb", "profileType": "61eb9e95-4a9f-43b2-a276-c6e29675ad97", "rate": null, "rdDistinguishability": null, "rdFrames": null, "rdFtpurl": null, "rdIsSubtitles": "2", "rdIsTranscribe": "0", "rdIsUpload": "0", "rdPattern": "\u7535\u5f71+\u8d44\u6e90", "rdSltranscribefs": null, "rdSplitScreen": "6", "rdStream": null, "sBgcolor": null, "sBgtrans": "1", "sColor": null, "sDisplaymode": null, "sFontsize": null, "sHorizontalposition": null, "sVerticalposition": null, "samemode": null, "simplemode": null, "status": 1, "uuid": "9da6f518-cc39-4ba4-9c79-3f48b5c4bcce", "videoautolayout": null, "videoautoscanlnterval": null, "videolayout": null, "videoresolution": null, "voiceTime": null, "vrdFchoose": null, "vrdIsParenttracking": "0", "vrdIsSeedtracking": null, "vrdZchoose": null}], "totalPage": 1, "totalRows": 1}&amp;platMark=
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'conference_create'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>自动发言->layoutOnOff</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.3')" >
+        pass</a>
+
+    <div id='div_pt2.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.3: 1, 自动发言-&gt;layoutOnOff
+2, Lesson operate req args: {'action': 0, 'e164': u'0001'}
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'layoutOff'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>自动发言->layoutOnOff</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.4')" >
+        pass</a>
+
+    <div id='div_pt2.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.4: 1, 自动发言-&gt;layoutOnOff
+2, Lesson operate req args: {'action': 1, 'e164': u'0001'}
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'layoutOn'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.5' class='hiddenRow'>
+    <td class='none'><div class='testcase'>挂断->partyDisconnect</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.5')" >
+        pass</a>
+
+    <div id='div_pt2.5' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.5').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.5: 1, 挂断-&gt;partyDisconnect
+2, Lesson operate req args: VR2110105029-10086-4
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'offline'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.6' class='hiddenRow'>
+    <td class='none'><div class='testcase'>呼叫->partyConnect</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.6')" >
+        pass</a>
+
+    <div id='div_pt2.6' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.6').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.6: 1, 呼叫-&gt;partyConnect
+2, Lesson operate req args: VR2110105029-10086-4
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'online'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.7' class='hiddenRow'>
+    <td class='none'><div class='testcase'>取消静音->partyAudioVideoUnmute</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.7')" >
+        pass</a>
+
+    <div id='div_pt2.7' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.7').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.7: 1, 取消静音-&gt;partyAudioVideoUnmute
+2, Lesson operate req args: VR2110105029-10086-4
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'off audiomute'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.8' class='hiddenRow'>
+    <td class='none'><div class='testcase'>静音->partyAudioVideoMute</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.8')" >
+        pass</a>
+
+    <div id='div_pt2.8' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.8').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.8: 1, 静音-&gt;partyAudioVideoMute
+2, Lesson operate req args: VR2110105029-10086-4
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'audiomute'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.9' class='hiddenRow'>
+    <td class='none'><div class='testcase'>点名->setConfVideoLayout</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.9')" >
+        pass</a>
+
+    <div id='div_pt2.9' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.9').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.9: 1, 点名-&gt;setConfVideoLayout
+2, Lesson operate req args: {'lessonId': 'f0bbdfd1-a64a-45e8-84ff-33f95d4c38df', 'uniqueId': u'VR2110105029-10086-4'}
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'uid in layot'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft2.10' class='none'>
+    <td class='failCase'><div class='testcase'>取消点名->cancelConfVideoLayout</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft2.10')" >
+        fail</a>
+
+    <div id='div_ft2.10' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft2.10').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft2.10: 1, 取消点名-&gt;cancelConfVideoLayout
+2, Lesson operate req args: {'lessonId': 'f0bbdfd1-a64a-45e8-84ff-33f95d4c38df', 'uniqueId': u'VR2110105029-10086-4'}
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'faild', 'desc': 'uid not in layot'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.11' class='hiddenRow'>
+    <td class='none'><div class='testcase'>挂断->partyDisconnect</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.11')" >
+        pass</a>
+
+    <div id='div_pt2.11' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.11').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.11: 1, 挂断-&gt;partyDisconnect
+2, Lesson operate req args: VR2110105029-10086-5
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'offline'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.12' class='hiddenRow'>
+    <td class='none'><div class='testcase'>呼叫->partyConnect</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.12')" >
+        pass</a>
+
+    <div id='div_pt2.12' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.12').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.12: 1, 呼叫-&gt;partyConnect
+2, Lesson operate req args: VR2110105029-10086-5
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'online'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.13' class='hiddenRow'>
+    <td class='none'><div class='testcase'>静音->partyAudioVideoMute</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.13')" >
+        pass</a>
+
+    <div id='div_pt2.13' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.13').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.13: 1, 静音-&gt;partyAudioVideoMute
+2, Lesson operate req args: VR2110105029-10086-5
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'audiomute'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.14' class='hiddenRow'>
+    <td class='none'><div class='testcase'>取消静音->partyAudioVideoUnmute</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.14')" >
+        pass</a>
+
+    <div id='div_pt2.14' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.14').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.14: 1, 取消静音-&gt;partyAudioVideoUnmute
+2, Lesson operate req args: VR2110105029-10086-5
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'off audiomute'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.15' class='hiddenRow'>
+    <td class='none'><div class='testcase'>挂断->partyDisconnect</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.15')" >
+        pass</a>
+
+    <div id='div_pt2.15' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.15').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.15: 1, 挂断-&gt;partyDisconnect
+2, Lesson operate req args: VR2110105029-10086-0
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'offline'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.16' class='hiddenRow'>
+    <td class='none'><div class='testcase'>呼叫->partyConnect</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.16')" >
+        pass</a>
+
+    <div id='div_pt2.16' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.16').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.16: 1, 呼叫-&gt;partyConnect
+2, Lesson operate req args: VR2110105029-10086-0
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'online'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.17' class='hiddenRow'>
+    <td class='none'><div class='testcase'>取消静音->partyAudioVideoUnmute</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.17')" >
+        pass</a>
+
+    <div id='div_pt2.17' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.17').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.17: 1, 取消静音-&gt;partyAudioVideoUnmute
+2, Lesson operate req args: VR2110105029-10086-0
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'off audiomute'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.18' class='hiddenRow'>
+    <td class='none'><div class='testcase'>静音->partyAudioVideoMute</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.18')" >
+        pass</a>
+
+    <div id='div_pt2.18' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.18').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.18: 1, 静音-&gt;partyAudioVideoMute
+2, Lesson operate req args: VR2110105029-10086-0
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'audiomute'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.19' class='hiddenRow'>
+    <td class='none'><div class='testcase'>点名->setConfVideoLayout</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.19')" >
+        pass</a>
+
+    <div id='div_pt2.19' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.19').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.19: 1, 点名-&gt;setConfVideoLayout
+2, Lesson operate req args: {'lessonId': 'f0bbdfd1-a64a-45e8-84ff-33f95d4c38df', 'uniqueId': u'VR2110105029-10086-0'}
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'uid in layot'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft2.20' class='none'>
+    <td class='failCase'><div class='testcase'>取消点名->cancelConfVideoLayout</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft2.20')" >
+        fail</a>
+
+    <div id='div_ft2.20' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft2.20').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft2.20: 1, 取消点名-&gt;cancelConfVideoLayout
+2, Lesson operate req args: {'lessonId': 'f0bbdfd1-a64a-45e8-84ff-33f95d4c38df', 'uniqueId': u'VR2110105029-10086-0'}
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'faild', 'desc': 'uid not in layot'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft2.21' class='none'>
+    <td class='failCase'><div class='testcase'>呼叫->partyConnect</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft2.21')" >
+        fail</a>
+
+    <div id='div_ft2.21' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft2.21').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft2.21: 1, 呼叫-&gt;partyConnect
+2, Lesson operate req args: VR2110105029-10086-1
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'failed', 'desc': 'check failed'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft2.22' class='none'>
+    <td class='failCase'><div class='testcase'>呼叫->partyConnect</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft2.22')" >
+        fail</a>
+
+    <div id='div_ft2.22' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft2.22').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft2.22: 1, 呼叫-&gt;partyConnect
+2, Lesson operate req args: VR2110105029-10086-1
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'failed', 'desc': 'check failed'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft2.23' class='none'>
+    <td class='failCase'><div class='testcase'>静音->partyAudioVideoMute</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft2.23')" >
+        fail</a>
+
+    <div id='div_ft2.23' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft2.23').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft2.23: 1, 静音-&gt;partyAudioVideoMute
+2, Lesson operate req args: VR2110105029-10086-1
+4, Receive Websocket result: {'result': 'failed'}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft2.24' class='none'>
+    <td class='failCase'><div class='testcase'>静音->partyAudioVideoMute</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft2.24')" >
+        fail</a>
+
+    <div id='div_ft2.24' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft2.24').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft2.24: 1, 静音-&gt;partyAudioVideoMute
+2, Lesson operate req args: VR2110105029-10086-1
+4, Receive Websocket result: {'result': 'failed'}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft2.25' class='none'>
+    <td class='failCase'><div class='testcase'>点名->setConfVideoLayout</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft2.25')" >
+        fail</a>
+
+    <div id='div_ft2.25' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft2.25').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft2.25: 1, 点名-&gt;setConfVideoLayout
+2, Lesson operate req args: {'lessonId': 'f0bbdfd1-a64a-45e8-84ff-33f95d4c38df', 'uniqueId': u'VR2110105029-10086-1'}
+4, Receive Websocket result: {'result': 'failed'}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft2.26' class='none'>
+    <td class='failCase'><div class='testcase'>取消点名->cancelConfVideoLayout</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft2.26')" >
+        fail</a>
+
+    <div id='div_ft2.26' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft2.26').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft2.26: 1, 取消点名-&gt;cancelConfVideoLayout
+2, Lesson operate req args: {'lessonId': 'f0bbdfd1-a64a-45e8-84ff-33f95d4c38df', 'uniqueId': u'VR2110105029-10086-1'}
+4, Receive Websocket result: {'result': 'failed'}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.27' class='hiddenRow'>
+    <td class='none'><div class='testcase'>挂断->partyDisconnect</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.27')" >
+        pass</a>
+
+    <div id='div_pt2.27' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.27').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.27: 1, 挂断-&gt;partyDisconnect
+2, Lesson operate req args: VR2110105029-10086-2
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'offline'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.28' class='hiddenRow'>
+    <td class='none'><div class='testcase'>呼叫->partyConnect</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.28')" >
+        pass</a>
+
+    <div id='div_pt2.28' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.28').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.28: 1, 呼叫-&gt;partyConnect
+2, Lesson operate req args: VR2110105029-10086-2
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'online'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.29' class='hiddenRow'>
+    <td class='none'><div class='testcase'>取消静音->partyAudioVideoUnmute</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.29')" >
+        pass</a>
+
+    <div id='div_pt2.29' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.29').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.29: 1, 取消静音-&gt;partyAudioVideoUnmute
+2, Lesson operate req args: VR2110105029-10086-2
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'off audiomute'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.30' class='hiddenRow'>
+    <td class='none'><div class='testcase'>静音->partyAudioVideoMute</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.30')" >
+        pass</a>
+
+    <div id='div_pt2.30' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.30').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.30: 1, 静音-&gt;partyAudioVideoMute
+2, Lesson operate req args: VR2110105029-10086-2
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'audiomute'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.31' class='hiddenRow'>
+    <td class='none'><div class='testcase'>点名->setConfVideoLayout</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.31')" >
+        pass</a>
+
+    <div id='div_pt2.31' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.31').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.31: 1, 点名-&gt;setConfVideoLayout
+2, Lesson operate req args: {'lessonId': 'f0bbdfd1-a64a-45e8-84ff-33f95d4c38df', 'uniqueId': u'VR2110105029-10086-2'}
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'uid in layot'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft2.32' class='none'>
+    <td class='failCase'><div class='testcase'>取消点名->cancelConfVideoLayout</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft2.32')" >
+        fail</a>
+
+    <div id='div_ft2.32' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft2.32').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft2.32: 1, 取消点名-&gt;cancelConfVideoLayout
+2, Lesson operate req args: {'lessonId': 'f0bbdfd1-a64a-45e8-84ff-33f95d4c38df', 'uniqueId': u'VR2110105029-10086-2'}
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'faild', 'desc': 'uid not in layot'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.33' class='hiddenRow'>
+    <td class='none'><div class='testcase'>挂断->partyDisconnect</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.33')" >
+        pass</a>
+
+    <div id='div_pt2.33' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.33').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.33: 1, 挂断-&gt;partyDisconnect
+2, Lesson operate req args: VR2110105029-10086-3
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'offline'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.34' class='hiddenRow'>
+    <td class='none'><div class='testcase'>呼叫->partyConnect</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.34')" >
+        pass</a>
+
+    <div id='div_pt2.34' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.34').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.34: 1, 呼叫-&gt;partyConnect
+2, Lesson operate req args: VR2110105029-10086-3
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'online'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.35' class='hiddenRow'>
+    <td class='none'><div class='testcase'>取消静音->partyAudioVideoUnmute</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.35')" >
+        pass</a>
+
+    <div id='div_pt2.35' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.35').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.35: 1, 取消静音-&gt;partyAudioVideoUnmute
+2, Lesson operate req args: VR2110105029-10086-3
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'off audiomute'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.36' class='hiddenRow'>
+    <td class='none'><div class='testcase'>静音->partyAudioVideoMute</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.36')" >
+        pass</a>
+
+    <div id='div_pt2.36' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.36').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.36: 1, 静音-&gt;partyAudioVideoMute
+2, Lesson operate req args: VR2110105029-10086-3
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'audiomute'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.37' class='hiddenRow'>
+    <td class='none'><div class='testcase'>点名->setConfVideoLayout</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.37')" >
+        pass</a>
+
+    <div id='div_pt2.37' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.37').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.37: 1, 点名-&gt;setConfVideoLayout
+2, Lesson operate req args: {'lessonId': 'f0bbdfd1-a64a-45e8-84ff-33f95d4c38df', 'uniqueId': u'VR2110105029-10086-3'}
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'uid in layot'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft2.38' class='none'>
+    <td class='failCase'><div class='testcase'>取消点名->cancelConfVideoLayout</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft2.38')" >
+        fail</a>
+
+    <div id='div_ft2.38' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft2.38').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft2.38: 1, 取消点名-&gt;cancelConfVideoLayout
+2, Lesson operate req args: {'lessonId': 'f0bbdfd1-a64a-45e8-84ff-33f95d4c38df', 'uniqueId': u'VR2110105029-10086-3'}
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'faild', 'desc': 'uid not in layot'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.39' class='hiddenRow'>
+    <td class='none'><div class='testcase'>下课->endLesson</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.39')" >
+        pass</a>
+
+    <div id='div_pt2.39' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.39').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.39: 1, 下课-&gt;endLesson
+2, Lesson operate req args: {'lessonId': 'f0bbdfd1-a64a-45e8-84ff-33f95d4c38df', 'e164': u'0001'}
+3, Executing: analyze
+4, Receive Websocket result: {'result': {'status': 'pass', 'desc': 'end lesson'}}
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='total_row'>
+    <td>Total</td>
+    <td>70</td>
+    <td>58</td>
+    <td>12</td>
+    <td>0</td>
+    <td>&nbsp;</td>
+</tr>
+</table>
+
+<div id='ending'>&nbsp;</div>
+
+</body>
+</html>

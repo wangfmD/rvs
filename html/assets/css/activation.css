@@ -1,0 +1,205 @@
+body{
+    background-color:#eff2f5;
+    font-family: Verdana, helvetica, arial, sans-serif;
+    font-size: 68.75%;
+    background: #fff;
+    color: #333;
+}
+
+html>body {
+    font-size: 16px; 
+    font-size: 68.75%;
+}
+
+.docker_tree{
+    height: 1015px;
+	width: 76%;
+}
+
+
+header{
+    padding-bottom:10px;
+}
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
+    font-family:Microsoft YaHei;
+    font-weight:normal;
+    margin:0;
+}
+.w{
+    width:600px;
+    margin-left:auto;
+    margin-right:auto;
+}
+.w-500{
+    width:500px;
+}
+.w_large{
+    width:1000px;
+}
+.logo_pic,.tip,.tip h3{
+    display:inline-block;
+}
+.tip h3{
+    vertical-align:-12px;
+}
+
+.ttt {
+	display:inline-block;
+    vertical-align:-20px;
+}
+
+.con_box{
+    background-color:#fff;
+    border-top:2px solid #eee;
+}
+.operation,.project{
+    padding:28px 0;
+}
+#docker_config .file{
+    cursor:pointer;
+}
+.opera_item{
+    padding:18px 0;
+    position:relative;
+}
+.selectAll{
+    position:relative;
+}
+.selectAll input[type='checkbox']{
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:10;
+    opacity:0;
+    margin:0;
+}
+
+.opera_item a{text-decoration:none}
+.opera_item .form-control,.opera_item .btn{
+    border-radius:0;
+}
+.opera_item .addBtn,.opera_item .checkbox{
+    position:absolute;
+    top:0;
+}
+.opera_item .addBtn{
+    right:-90px;
+}
+.opera_item .checkbox{
+    right:-40px;
+}
+.opera_item .checkbox label:after{
+    top:-8px;
+}
+.opera_item .form-group{
+    margin:0;
+}
+.opera_item label{
+    margin-bottom:0;
+    height:34px;
+    line-height:34px;
+    text-align:right;
+}
+.project_list ul{
+    margin:0;
+    padding:0;
+    list-style: none;
+}
+.con_box .table{
+    margin-bottom:0;
+}
+.table .e_name,.table .z_name{
+    width:140px;
+}
+span.e_name,span.z_name{
+    display:block;
+    white-space:normal;
+    word-break:break-all;
+}
+.table-bordered>thead>tr>th, .table-bordered>thead>tr>td{
+    border-width:1px;
+}
+.nopadding{
+    padding:0!important;
+}
+.version_list{
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+.version_list .list-item{
+    padding:10px 16px 10px 30px;
+}
+.version_list .list-item span,.version_list .list-item a{
+    display:inline-block;
+    margin-right:36px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+.version_list .list-item:not(:last-child){
+    border-bottom:1px solid #ddd;
+}
+.version_list .list-item .version_name{
+    width:110px;
+}
+.version_list .list-item .y_or_n{
+    width:20px;
+}
+.all_op{
+    display:inline;
+    margin-left:98px;
+}
+.all_op a{
+    margin-right:68px;
+}
+.install_v_t{
+	margin-right:36px;
+}
+.install_v,.install_v_t{
+	width:58px;
+}
+.version_list .list-item .undownlod{
+margin-left:-69px;
+}
+
+.version_list .list-item .reboot{
+margin-right:10px;
+}
+
+.btn-success{
+    display: inline-block;
+    padding: 10px 36px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.428571429;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 2px solid transparent;
+
+}
+.btn-default{
+    padding: 12px 31px;
+}
+.form-group{
+    line-height:34px;
+}
+.form-group .control-label{
+    font-size:14px;
+    padding-left:20px;
+}
+.fromInput,.fromInput .control-label{
+    padding:0;
+}
+
+.docker_config{
+	font-weight: 600;
+	line-height:34px;
+	font-size:14px;
+	margin-left: 386px;
+}

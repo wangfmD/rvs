@@ -1,0 +1,4514 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>管理平台功能测试</title>
+    <meta name="generator" content="HTMLTestRunner 0.8.2"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    
+<style type="text/css" media="screen">
+body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 80%; }
+table       { font-size: 100%; }
+pre         { }
+
+/* -- heading ---------------------------------------------------------------------- */
+h1 {
+	font-size: 16pt;
+	color: gray;
+}
+.heading {
+    margin-top: 0ex;
+    margin-bottom: 1ex;
+}
+
+.heading .attribute {
+    margin-top: 1ex;
+    margin-bottom: 0;
+}
+
+.heading .description {
+    margin-top: 4ex;
+    margin-bottom: 6ex;
+}
+
+/* -- css div popup ------------------------------------------------------------------------ */
+a.popup_link {
+}
+
+a.popup_link:hover {
+    color: red;
+}
+
+.popup_window {
+    display: none;
+    position: relative;
+    left: 0px;
+    top: 0px;
+    /*border: solid #627173 1px; */
+    padding: 10px;
+    background-color: #E6E6D6;
+    font-family: "Lucida Console", "Courier New", Courier, monospace;
+    text-align: left;
+    font-size: 8pt;
+    width: 500px;
+}
+
+}
+/* -- report ------------------------------------------------------------------------ */
+# show_detail_line {
+    margin-top: 3ex;
+    margin-bottom: 1ex;
+}
+# result_table {
+    width: 80%;
+    border-collapse: collapse;
+    border: 1px solid #777;
+}
+# header_row {
+    font-weight: bold;
+    color: white;
+    background-color: #777;
+}
+# result_table td {
+    border: 1px solid #777;
+    padding: 2px;
+}
+# total_row  { font-weight: bold; }
+.passClass  { background-color: #6c6; }
+.failClass  { background-color: #c60; }
+.errorClass { background-color: #c00; }
+.passCase   { color: #6c6; }
+.failCase   { color: #c60; font-weight: bold; }
+.errorCase  { color: #c00; font-weight: bold; }
+.hiddenRow  { display: none; }
+.testcase   { margin-left: 2em; }
+
+
+/* -- ending ---------------------------------------------------------------------- */
+# ending {
+}
+
+</style>
+
+</head>
+<body onload="version_load()">
+<script language="javascript" type="text/javascript"><!--
+output_list = Array();
+
+/* level - 0:Summary; 1:Failed; 2:All */
+function showCase(level) {
+    trs = document.getElementsByTagName("tr");
+    for (var i = 0; i < trs.length; i++) {
+        tr = trs[i];
+        id = tr.id;
+        if (id.substr(0,2) == 'ft') {
+            if (level < 1) {
+                tr.className = 'hiddenRow';
+            }
+            else {
+                tr.className = '';
+            }
+        }
+        if (id.substr(0,2) == 'pt') {
+            if (level > 1) {
+                tr.className = '';
+            }
+            else {
+                tr.className = 'hiddenRow';
+            }
+        }
+    }
+}
+
+
+function showClassDetail(cid, count) {
+    var id_list = Array(count);
+    var toHide = 1;
+    for (var i = 0; i < count; i++) {
+        tid0 = 't' + cid.substr(1) + '.' + (i+1);
+        tid = 'f' + tid0;
+        tr = document.getElementById(tid);
+        if (!tr) {
+            tid = 'p' + tid0;
+            tr = document.getElementById(tid);
+        }
+        id_list[i] = tid;
+        if (tr.className) {
+            toHide = 0;
+        }
+    }
+    for (var i = 0; i < count; i++) {
+        tid = id_list[i];
+        if (toHide) {
+            document.getElementById('div_'+tid).style.display = 'none'
+            document.getElementById(tid).className = 'hiddenRow';
+        }
+        else {
+            document.getElementById(tid).className = '';
+        }
+    }
+}
+
+
+function showTestDetail(div_id){
+    var details_div = document.getElementById(div_id)
+    var displayState = details_div.style.display
+    // alert(displayState)
+    if (displayState != 'block' ) {
+        displayState = 'block'
+        details_div.style.display = 'block'
+    }
+    else {
+        details_div.style.display = 'none'
+    }
+}
+
+
+function html_escape(s) {
+    s = s.replace(/&/g,'&amp;');
+    s = s.replace(/</g,'&lt;');
+    s = s.replace(/>/g,'&gt;');
+    return s;
+}
+
+function getExplorerInfo() {
+ var explorer = window.navigator.userAgent.toLowerCase() ;
+ //ie
+ if (explorer.indexOf("msie") >= 0) {
+    var ver=explorer.match(/msie ([\d.]+)/)[1];
+    return {type:"IE",version:ver};
+ }
+ //firefox
+ else if (explorer.indexOf("firefox") >= 0) {
+    var ver=explorer.match(/firefox\/([\d.]+)/)[1];
+    return {type:"Firefox",version:ver};
+ }
+ //Chrome
+ else if(explorer.indexOf("chrome") >= 0){
+    var ver=explorer.match(/chrome\/([\d.]+)/)[1];
+     return {type:"Chrome",version:ver};
+ }
+ //Opera
+ else if(explorer.indexOf("opera") >= 0){
+ var ver=explorer.match(/opera.([\d.]+)/)[1];
+ return {type:"Opera",version:ver};
+ }
+ //Safari
+ else if(explorer.indexOf("Safari") >= 0){
+ var ver=explorer.match(/version\/([\d.]+)/)[1];
+ return {type:"Safari",version:ver};
+ }
+ }
+ function version_load(){
+    document.getElementById("browserVersion").innerHTML=getExplorerInfo().type+"\nversion:"+getExplorerInfo().version;
+ }
+
+//$(function(){
+//   $("#browserVersion").html(getExplorerInfo().type+"\nversion:"+getExplorerInfo().version)
+
+//})
+// alert("type:"+getExplorerInfo().type+"\nversion:"+getExplorerInfo().version);
+
+/* obsoleted by detail in <div>
+function showOutput(id, name) {
+    var w = window.open("", //url
+                    name,
+                    "resizable,scrollbars,status,width=800,height=450");
+    d = w.document;
+    d.write("<pre>");
+    d.write(html_escape(output_list[id]));
+    d.write("\n");
+    d.write("<a href='javascript:window.close()'>close</a>\n");
+    d.write("</pre>\n");
+    d.close();
+}
+*/
+--></script>
+
+<div class='heading'>
+<h1>管理平台功能测试</h1>
+<p class='attribute'><strong>Start Time:</strong> 2017-10-30 17:23:33</p>
+<p class='attribute'><strong>Duration:</strong> 1:03:20</p>
+<p class='attribute'><strong>Status:</strong> Pass 118 Failure 2 Error 2</p>
+<p class='attribute'><strong>Test Execution Server:</strong> 220.250.64.225</p>
+<p class='attribute'><strong>Project Path:</strong> /opt/autoTest_pro</p>
+<p class='attribute'><strong>Test project Server:</strong> 10.1.41.56</p>
+<p class='attribute'><strong>projectVersion:</strong> middleclient_V2.01.012.A.011</p>
+
+<p class="attribute"><strong>the browser version:</strong><span id="browserVersion"></span></p>
+<p class='description'>用例执行情况：</p>
+</div>
+
+
+
+<p id='show_detail_line'>Show
+<a href='javascript:showCase(0)'>Summary</a>
+<a href='javascript:showCase(1)'>Failed</a>
+<a href='javascript:showCase(2)'>All</a>
+</p>
+<table id='result_table'>
+<colgroup>
+<col align='left' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+</colgroup>
+<tr id='header_row'>
+    <td>Test Group/Test case</td>
+    <td>Count</td>
+    <td>Pass</td>
+    <td>Fail</td>
+    <td>Error</td>
+    <td>View</td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_A.test_a1_cleanDBV2_sta.dbMgr: dbMgr</td>
+    <td>2</td>
+    <td>2</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c1',2)">Detail</a></td>
+</tr>
+
+<tr id='pt1.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_a_resetDB: 重刷数据库</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.1')" >
+        pass</a>
+
+    <div id='div_pt1.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.1: http://10.1.41.56:6000/update.do
+http://10.1.41.56:6000/update.do
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_b_updateDB: 设置系统参数</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.2')" >
+        pass</a>
+
+    <div id='div_pt1.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt1.2: DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_A.test_a2_tenantMgr_sta.TenantMgr: 租户管理场景</td>
+    <td>2</td>
+    <td>2</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c2',2)">Detail</a></td>
+</tr>
+
+<tr id='pt2.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_tenant: 添加租户</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt2.1')" >
+        pass</a>
+
+    <div id='div_pt2.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt2.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt2.1: add tenant info: 河南省教育局
+add tenant 河南省教育局 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt2.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_logout: 注销</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_A.test_a3_add_school_sta.PcmgrSchoolADD: 租户管理场景</td>
+    <td>3</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c3',3)">Detail</a></td>
+</tr>
+
+<tr id='pt3.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_pcmgr1_add_school</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt3.1')" >
+        pass</a>
+
+    <div id='div_pt3.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt3.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt3.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt3.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_pcmgr2_add_classroom</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt3.2')" >
+        pass</a>
+
+    <div id='div_pt3.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt3.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt3.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt3.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_pcmgr3_add_integrated</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt3.3')" >
+        pass</a>
+
+    <div id='div_pt3.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt3.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt3.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_A.test_a5_modofy_school_sta.PcmgrSchoolModify: 租户管理场景</td>
+    <td>3</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c4',3)">Detail</a></td>
+</tr>
+
+<tr id='pt4.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_pcmgr1_modify_school</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt4.1')" >
+        pass</a>
+
+    <div id='div_pt4.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt4.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt4.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt4.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_pcmgr2_modify_classroom</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt4.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_pcmgr3_modify_integrated</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_A.test_a6_del_school_sta.PcmgrSchoolDel: 租户管理场景</td>
+    <td>3</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c5',3)">Detail</a></td>
+</tr>
+
+<tr id='pt5.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_pcmgr1_del_integrated_ok</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt5.1')" >
+        pass</a>
+
+    <div id='div_pt5.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt5.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt5.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt5.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_pcmgr2_del_classroom_ok</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_pcmgr3_del_school_ok</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_A.test_a7_add_schools_sta.PcmgrClassroomADD: 租户管理场景</td>
+    <td>4</td>
+    <td>4</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c6',4)">Detail</a></td>
+</tr>
+
+<tr id='pt6.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_classroom_1: 添加教室：81教室</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt6.1')" >
+        pass</a>
+
+    <div id='div_pt6.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt6.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt6.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt6.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_classroom_2: 添加教室：82教室</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt6.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_classroom_3: 添加教室：140教室</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt6.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_classroom_4: 添加教室：141教室</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_B.test_a0_cleanDBV2_sta.dbMgr: dbMgr</td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c7',1)">Detail</a></td>
+</tr>
+
+<tr id='pt7.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_resetDB: 重刷数据库</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt7.1')" >
+        pass</a>
+
+    <div id='div_pt7.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt7.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt7.1: http://10.1.41.56:6000/update.do
+http://10.1.41.56:6000/update.do
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_B.test_a1_updateDB_sta.dbMgr</td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c8',1)">Detail</a></td>
+</tr>
+
+<tr id='pt8.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_updateDB</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt8.1')" >
+        pass</a>
+
+    <div id='div_pt8.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt8.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt8.1: DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_B.test_a2_tenantMgr_sta.TenantMgr: 租户管理场景</td>
+    <td>5</td>
+    <td>5</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c9',5)">Detail</a></td>
+</tr>
+
+<tr id='pt9.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_tenant: 添加租户</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt9.1')" >
+        pass</a>
+
+    <div id='div_pt9.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt9.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt9.1: add tenant info: 河南省教育局
+add tenant 河南省教育局 end.
+add tenant info: 河南省教育局
+add tenant 河南省教育局 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt9.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bsearch_tenant_exist: 查询租户_存在</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt9.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bsearch_tenant_no_existent: 查询租户_不存在</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt9.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bupdate_Tenant: 修改单条租户管理</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt9.4')" >
+        pass</a>
+
+    <div id='div_pt9.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt9.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt9.4: 修改租户管理信息：湖北教育局abc,002
+update_Tenant 湖北教育局abc success.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt9.5' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_tenant: 主人删除租户</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_B.test_a3_updatepasswd_sta.updatepasswd: '修改密码</td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c10',1)">Detail</a></td>
+</tr>
+
+<tr id='pt10.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_A_update_passwd: 修改密码</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt10.1')" >
+        pass</a>
+
+    <div id='div_pt10.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt10.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt10.1: loginfo:
+user:hbsadmin，platform:湖北教育局abc
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_ba1_choolMgr_sta.SchoolMgr: '学校管理</td>
+    <td>5</td>
+    <td>5</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c11',5)">Detail</a></td>
+</tr>
+
+<tr id='pt11.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_addschool: 添加学校</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt11.1')" >
+        pass</a>
+
+    <div id='div_pt11.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt11.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt11.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+添加学校信息：二中，高中，郑州市
+添加：二中 成功。
+添加学校信息：三中，中学，郑州市
+添加：三中 成功。
+添加学校信息：四中，中学，开封市
+添加：四中 成功。
+添加学校信息：五中，小学，开封市
+添加：五中 成功。
+添加学校信息：六中，小学，开封市
+添加：六中 成功。
+添加学校信息：一中，高中，郑州市
+添加：一中 成功。
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt11.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bupdate_school: 修改单条学校数据</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt11.2')" >
+        pass</a>
+
+    <div id='div_pt11.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt11.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt11.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+修改学校信息：河南一中
+update_School 河南一中 success.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt11.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_school_cancel: 删除学校_取消</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt11.3')" >
+        pass</a>
+
+    <div id='div_pt11.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt11.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt11.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt11.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_school_ok: 删除学校_确定</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt11.4')" >
+        pass</a>
+
+    <div id='div_pt11.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt11.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt11.4: loginfo:
+user:hnsadmin，platform:河南省教育局
+开始删除一所学校...
+删除一所学校成功。
+开始删除一所学校...
+删除一所学校成功。
+开始删除一所学校...
+删除一所学校成功。
+开始删除一所学校...
+删除一所学校成功。
+开始删除一所学校...
+删除一所学校成功。
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt11.5' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_search_school: 学校查询</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt11.5')" >
+        pass</a>
+
+    <div id='div_pt11.5' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt11.5').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt11.5: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_ba2_classroomMgr_sta.schoolmanager: '教室管理</td>
+    <td>3</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c12',3)">Detail</a></td>
+</tr>
+
+<tr id='pt12.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_school: 添加教室</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt12.1')" >
+        pass</a>
+
+    <div id='div_pt12.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt12.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt12.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+add info:31className,1
+add 31className end.
+add info:32className,1
+add 32className end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt12.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_cmodify_school: 修改教室信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt12.2')" >
+        pass</a>
+
+    <div id='div_pt12.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt12.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt12.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+add info:32classNamemodify,100
+add 32classNamemodify success.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt12.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_school_cancel: 删除学校_取消</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt12.3')" >
+        pass</a>
+
+    <div id='div_pt12.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt12.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt12.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+开始删除一间教室...
+删除一间教室成功。
+开始删除一间教室...
+删除一间教室成功。
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_ba3_sectionMgr_sta.sectionmanager: '节管理</td>
+    <td>4</td>
+    <td>4</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c13',4)">Detail</a></td>
+</tr>
+
+<tr id='pt13.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_sections: 添加节</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt13.1')" >
+        pass</a>
+
+    <div id='div_pt13.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt13.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt13.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+add info:二年级,数学,数学第二章,sx第一节,第一节zjm
+add sx第一节 end.
+add info:二年级,数学,数学第二章,sx第二节,第二节zjm
+add sx第二节 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt13.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bsearch_section: 查询节信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt13.2')" >
+        pass</a>
+
+    <div id='div_pt13.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt13.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt13.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+search info:二年级,数学,数学第二章,sx第一节,第一节zjm
+search sx第一节 end.
+search info:二年级,数学,数学第二章,sx第二节,第二节zjm
+search sx第二节 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt13.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bupdate_section: 查询节信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt13.3')" >
+        pass</a>
+
+    <div id='div_pt13.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt13.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt13.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+修改节管理信息：平行线testSX01
+add 平行线test success.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt13.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_section_ok: 删除节_确定</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt13.4')" >
+        pass</a>
+
+    <div id='div_pt13.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt13.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt13.4: loginfo:
+user:hnsadmin，platform:河南省教育局
+delete info:二年级,数学,数学第二章,sx第一节,第一节zjm
+delete sx第一节 end.
+delete info:二年级,数学,数学第二章,sx第二节,第二节zjm
+delete sx第二节 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_ba3_subjectMgr_sta.schoolgroupmanager: '科目组管理</td>
+    <td>4</td>
+    <td>4</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c14',4)">Detail</a></td>
+</tr>
+
+<tr id='pt14.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_subjectgrp: 添加教室</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt14.1')" >
+        pass</a>
+
+    <div id='div_pt14.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt14.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt14.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+add info:计算机,001
+add 计算机 end.
+add info:物理,002
+add 物理 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt14.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bsearch_subjectgrp: 查询教室信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt14.2')" >
+        pass</a>
+
+    <div id='div_pt14.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt14.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt14.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+search info:计算机
+search 计算机 success.
+search info:物理
+search 物理 success.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt14.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bupdate_subjectgrp: 修改组管理</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt14.3')" >
+        pass</a>
+
+    <div id='div_pt14.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt14.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt14.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+update info:计算机modif,0101,计算机modif
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt14.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_subjectgrp_ok: 删除科目组_确定</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt14.4')" >
+        pass</a>
+
+    <div id='div_pt14.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt14.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt14.4: loginfo:
+user:hnsadmin，platform:河南省教育局
+search info:计算机
+删除一组科目组成功。
+search info:物理
+删除一组科目组成功。
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_ba4_knowledgMgr_sta.KnowledgeMgr: '知识点管理</td>
+    <td>4</td>
+    <td>4</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c15',4)">Detail</a></td>
+</tr>
+
+<tr id='pt15.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_knowledges: 添加知识点</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt15.1')" >
+        pass</a>
+
+    <div id='div_pt15.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt15.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt15.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+add info:双细胞,语文
+add 双细胞 end.
+add info:多细胞,语文
+add 多细胞 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt15.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bsearch_knowledge: 查询知识点信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt15.2')" >
+        pass</a>
+
+    <div id='div_pt15.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt15.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt15.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+search info:双细胞,语文
+search 双细胞 end.
+search info:多细胞,语文
+search 多细胞 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt15.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bupdate_knowledge: 修改知识点信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt15.3')" >
+        pass</a>
+
+    <div id='div_pt15.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt15.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt15.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+修改知识点管理信息：梯形的特征modifySX01
+add 梯形的特征modify success.
+修改知识点管理信息：比的性质SX01
+add 比的性质 success.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt15.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_knowledge_ok: 删除知识点_确定</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt15.4')" >
+        pass</a>
+
+    <div id='div_pt15.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt15.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt15.4: loginfo:
+user:hnsadmin，platform:河南省教育局
+delete info:双细胞,语文
+delete 双细胞 end.
+delete info:多细胞,语文
+delete 多细胞 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_ba4_userMgr_sta.UserlistMgr: '用户管理</td>
+    <td>4</td>
+    <td>4</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c16',4)">Detail</a></td>
+</tr>
+
+<tr id='pt16.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_user: 添加用户</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt16.1')" >
+        pass</a>
+
+    <div id='div_pt16.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt16.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt16.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+添加用户的信息：auser,ateacher
+添加用户ateacher成功。
+添加用户的信息：buser1,bteacher1
+添加用户bteacher1成功。
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt16.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bsearch_user: 查询用户信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt16.2')" >
+        pass</a>
+
+    <div id='div_pt16.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt16.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt16.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+查询用户的信息：auser,ateacher
+查询用户ateacher成功。
+查询用户的信息：buser1,bteacher1
+查询用户bteacher1成功。
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt16.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bupdate_user: 修改用户信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt16.3')" >
+        pass</a>
+
+    <div id='div_pt16.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt16.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt16.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+修改用户信息：18551184502，9930356@qq.com，张三
+update_User 张三 success.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt16.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_user_ok: 删除用户_确定</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt16.4')" >
+        pass</a>
+
+    <div id='div_pt16.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt16.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt16.4: loginfo:
+user:hnsadmin，platform:河南省教育局
+开始删除一个用户...
+删除一个用户成功。
+开始删除一个用户...
+删除一个用户成功。
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_ba5_roleMgr_sta.RoleMgr: '角色管理</td>
+    <td>3</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c17',3)">Detail</a></td>
+</tr>
+
+<tr id='pt17.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_role: 添加角色</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt17.1')" >
+        pass</a>
+
+    <div id='div_pt17.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt17.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt17.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+添加的角色信息：a2role1,1,comment role
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt17.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bupdate_role: 修改角色</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt17.2')" >
+        pass</a>
+
+    <div id='div_pt17.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt17.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt17.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+修改角色信息：a2role1_modify,001,说明测试数据
+add a2role1_modify success.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt17.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_role_ok: 删除科目组_确定</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt17.3')" >
+        pass</a>
+
+    <div id='div_pt17.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt17.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt17.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+删除角色成功。
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_ba6_systemLogs_sta.InteractGroupMgr: '日志管理</td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c18',1)">Detail</a></td>
+</tr>
+
+<tr id='pt18.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_search_systemLog: 查询系统日志信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt18.1')" >
+        pass</a>
+
+    <div id='div_pt18.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt18.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt18.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+search info:hnsadmin
+search hnsadmin success.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_ba7_interactGrpMgr_sta.InteractGroup: '互动组管理</td>
+    <td>4</td>
+    <td>4</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c19',4)">Detail</a></td>
+</tr>
+
+<tr id='pt19.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_interactgrp: 添加互动组</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt19.1')" >
+        pass</a>
+
+    <div id='div_pt19.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt19.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt19.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+add info:grp1,课程组
+add grp1 end.
+add info:grp2,会议组
+add grp2 end.
+add info:grp3,会议组
+add grp3 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt19.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bsearch_interactgrp: 查询互动组信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt19.2')" >
+        pass</a>
+
+    <div id='div_pt19.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt19.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt19.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+search info:grp1
+search grp1 success.
+search info:grp2
+search grp2 success.
+search info:grp3
+search grp3 success.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt19.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bupdate_interactgrp: 修改互动组信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt19.3')" >
+        pass</a>
+
+    <div id='div_pt19.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt19.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt19.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+修改互动组管理信息：互动组
+add 互动组 success.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt19.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_interactgrp_ok: 删除互动组_确定</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt19.4')" >
+        pass</a>
+
+    <div id='div_pt19.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt19.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt19.4: loginfo:
+user:hnsadmin，platform:河南省教育局
+删除教室组成功。
+删除教室组成功。
+删除教室组成功。
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_ba8_subjectMgr_sta.SubjectMgr: '科目互动管理</td>
+    <td>4</td>
+    <td>4</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c20',4)">Detail</a></td>
+</tr>
+
+<tr id='pt20.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_subjects: 添加科目</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt20.1')" >
+        pass</a>
+
+    <div id='div_pt20.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt20.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt20.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+add info:书法,学习中国文化
+add 书法 end.
+add info:计算机,计算机基础应用
+add 计算机 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt20.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bsearch_subjects: 查询科目信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt20.2')" >
+        pass</a>
+
+    <div id='div_pt20.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt20.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt20.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+add info:书法
+add 书法 end.
+add info:计算机
+add 计算机 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt20.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bupdate_subjects: 修改科目信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt20.3')" >
+        pass</a>
+
+    <div id='div_pt20.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt20.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt20.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+修改互动组管理信息：测试科目名称描述说明
+add 测试科目名称 success.
+修改互动组管理信息：书法描述说明
+add 书法 success.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt20.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_subjects_ok: 删除科目_确定</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt20.4')" >
+        pass</a>
+
+    <div id='div_pt20.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt20.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt20.4: loginfo:
+user:hnsadmin，platform:河南省教育局
+delete info:书法
+delete 书法 end.
+delete info:计算机
+delete 计算机 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_ba9_chapterMgr_sta.ChapterMgr: '章管理</td>
+    <td>4</td>
+    <td>4</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c21',4)">Detail</a></td>
+</tr>
+
+<tr id='pt21.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_chapters: 添加章</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt21.1')" >
+        pass</a>
+
+    <div id='div_pt21.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt21.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt21.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+add info:二年级,数学,第一章a,助记码1
+add 第一章a end.
+add info:二年级,数学,第一章b,助记码1
+add 第一章b end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt21.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bsearch_chapter: 查询章信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt21.2')" >
+        pass</a>
+
+    <div id='div_pt21.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt21.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt21.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+search info:数学,第一章a
+search info:数学,第一章a end
+search info:数学,第一章b
+search info:数学,第一章b end
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt21.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bupdate_chapter: 修改章信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt21.3')" >
+        pass</a>
+
+    <div id='div_pt21.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt21.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt21.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+修改章管理信息：语文第一章modifySX01
+add 语文第一章modify success.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt21.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_chapter_ok: 删除章_确定</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt21.4')" >
+        pass</a>
+
+    <div id='div_pt21.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt21.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt21.4: loginfo:
+user:hnsadmin，platform:河南省教育局
+delete info:数学,第一章a
+delete info:数学,第一章a end
+delete info:数学,第一章b
+delete info:数学,第一章b end
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_bb10_mcuMgr_sta.MCUequipmentMgr: 'MCU管理</td>
+    <td>4</td>
+    <td>4</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c22',4)">Detail</a></td>
+</tr>
+
+<tr id='pt22.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_MCUequipments: 添加MCU</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt22.1')" >
+        pass</a>
+
+    <div id='div_pt22.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt22.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt22.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+add info:85mcu,10.1.0.85,POLYCOM,POLYCOM
+add 85mcu end.
+add info:95mcu,10.1.0.95,POLYCOM,POLYCOM
+add 95mcu end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt22.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bsearch_MCUequipment: 查询MCU信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt22.2')" >
+        pass</a>
+
+    <div id='div_pt22.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt22.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt22.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+search info:85mcu,10.1.0.85,POLYCOM,POLYCOM
+search 85mcu end.
+search info:95mcu,10.1.0.95,POLYCOM,POLYCOM
+search 95mcu end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt22.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bupdate_MCUequipment: 查询中心设备MCU信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt22.3')" >
+        pass</a>
+
+    <div id='div_pt22.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt22.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt22.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+修改中心设备信息：测试设备,10.1.0.19,80,zhangsan,111111,10.1.4.33,80,1000
+add 测试设备 success.
+修改中心设备信息：85mcu,10.1.0.19,80,zhangsan,111111,10.1.4.33,80,1000
+add 85mcu success.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt22.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_MCUequipment_ok: 删除MCU_确定</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt22.4')" >
+        pass</a>
+
+    <div id='div_pt22.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt22.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt22.4: loginfo:
+user:hnsadmin，platform:河南省教育局
+delete info:85mcu,10.1.0.85,POLYCOM,POLYCOM
+delete 85mcu end.
+delete info:95mcu,10.1.0.95,POLYCOM,POLYCOM
+delete 95mcu end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_bb11_interactMgr_sta.InteractMgr: '消息中间管理</td>
+    <td>4</td>
+    <td>4</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c23',4)">Detail</a></td>
+</tr>
+
+<tr id='pt23.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_interacts: 添加消息中间</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt23.1')" >
+        pass</a>
+
+    <div id='div_pt23.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt23.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt23.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+add info:10.1.41.56,8080,顶级消息中间件,80d0d5ec-9dad-4ec3-87ce-aaa2cf25ec2c
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt23.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bsearch_interacts: 查询消息中间信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt23.2')" >
+        pass</a>
+
+    <div id='div_pt23.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt23.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt23.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt23.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bupdate_interacts: 修改单条中心设备消息中间件数据</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt23.3')" >
+        pass</a>
+
+    <div id='div_pt23.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt23.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt23.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+修改中心设备消息中间件信息：10.1.41.56,8080
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt23.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_interacts_ok: 删除消息中间_确定</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt23.4')" >
+        pass</a>
+
+    <div id='div_pt23.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt23.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt23.4: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_bb12_conferenceCfgs_sta.ConferenceCfgsMgr: '会议模板管理</td>
+    <td>4</td>
+    <td>4</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c24',4)">Detail</a></td>
+</tr>
+
+<tr id='pt24.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_cfg_conferences: 添加会议模板</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt24.1')" >
+        pass</a>
+
+    <div id='div_pt24.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt24.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt24.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+add info:会议
+add 会议 end.
+add info:会_议480p
+add 会_议480p end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt24.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bsearch_cfg_conferences: 查询会议模板信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt24.2')" >
+        pass</a>
+
+    <div id='div_pt24.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt24.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt24.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+search info:会议
+search 会议 end.
+search info:会_议480p
+search 会_议480p end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt24.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bupdate_cfg_confrences: 修改会议模板信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt24.3')" >
+        pass</a>
+
+    <div id='div_pt24.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt24.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt24.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+修改中心设备视频会议信息：720PP
+add 720PP success.
+修改中心设备视频会议信息：会议
+add 会议 success.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt24.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_cfg_conferences: 删除会议模板_确定</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt24.4')" >
+        pass</a>
+
+    <div id='div_pt24.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt24.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt24.4: loginfo:
+user:hnsadmin，platform:河南省教育局
+delete info:会议
+delete 会议 end.
+delete info:会_议480p
+delete 会_议480p end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_bb13_hdkCfgs_sta.HdkCfgsMgr: '互动课模板管理</td>
+    <td>4</td>
+    <td>4</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c25',4)">Detail</a></td>
+</tr>
+
+<tr id='pt25.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_cfg_hdks: 添加互动课模板</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt25.1')" >
+        pass</a>
+
+    <div id='div_pt25.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt25.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt25.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+add info:互动课模板
+add 互动课模板 end.
+add info:互动_课模板480p
+add 互动_课模板480p end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt25.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bsearch_cfg_hdks: 查询互动课模板信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt25.2')" >
+        pass</a>
+
+    <div id='div_pt25.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt25.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt25.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+search info:互动课模板
+search 互动课模板 end.
+search info:互动_课模板480p
+search 互动_课模板480p end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt25.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bupdate_cfg_hdks: 修改互动课模板信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt25.3')" >
+        pass</a>
+
+    <div id='div_pt25.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt25.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt25.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+修改中心设备信息：720PP
+add 720PP success.
+修改中心设备信息：互动课模板
+add 互动课模板 success.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt25.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_cfg_hdks: 删除互动课模板_确定</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt25.4')" >
+        pass</a>
+
+    <div id='div_pt25.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt25.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt25.4: loginfo:
+user:hnsadmin，platform:河南省教育局
+delete info:互动课模板
+delete 互动课模板 end.
+delete info:互动_课模板480p
+delete 互动_课模板480p end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='errorClass'>
+    <td>level_D.test_bb14_jpkCfgs_sta.JpkCfgsMgr: '精品课模板管理</td>
+    <td>4</td>
+    <td>2</td>
+    <td>1</td>
+    <td>1</td>
+    <td><a href="javascript:showClassDetail('c26',4)">Detail</a></td>
+</tr>
+
+<tr id='pt26.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_cfg_jpks: 添加精品课模板</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt26.1')" >
+        pass</a>
+
+    <div id='div_pt26.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt26.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt26.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+add info:精品课
+add 精品课 end.
+add info:精品_课480p
+add 精品_课480p end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft26.2' class='none'>
+    <td class='failCase'><div class='testcase'>test_bsearch_cfg_jpks: 查询精品课模板信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft26.2')" >
+        fail</a>
+
+    <div id='div_ft26.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft26.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft26.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+search info:精品课
+Message: element not visible
+  (Session info: chrome=60.0.3112.113)
+  (Driver info: chromedriver=2.30.477700 (0057494ad8732195794a7b32078424f92a5fce41),platform=Windows NT 10.0.14393 x86_64) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 58 milliseconds
+Build info: version: '2.53.0', revision: '35ae25b', time: '2016-03-15 17:00:58'
+System info: host: 'xungejiaoyu-PC', ip: '10.1.41.39', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_102'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities [{applicationCacheEnabled=false, rotatable=false, mobileEmulationEnabled=false, networkConnectionEnabled=false, chrome={chromedriverVersion=2.30.477700 (0057494ad8732195794a7b32078424f92a5fce41), userDataDir=C:\Users\XUNGEJ~1\AppData\Local\Temp\scoped_dir69976_31896}, takesHeapSnapshot=true, pageLoadStrategy=normal, databaseEnabled=false, handlesAlerts=true, hasTouchScreen=false, version=60.0.3112.113, platform=XP, browserConnectionEnabled=false, nativeEvents=true, acceptSslCerts=true, locationContextEnabled=true, webStorageEnabled=true, browserName=chrome, takesScreenshot=true, javascriptEnabled=true, cssSelectorsEnabled=true, unexpectedAlertBehaviour=}]
+Session ID: bbb690eec74a8b30035de96fe3f2245c
+Screenshot: available via screen
+Stacktrace:
+    at sun.reflect.NativeConstructorAccessorImpl.newInstance0 (None:-2)
+    at sun.reflect.NativeConstructorAccessorImpl.newInstance (None:-1)
+    at sun.reflect.DelegatingConstructorAccessorImpl.newInstance (None:-1)
+    at java.lang.reflect.Constructor.newInstance (None:-1)
+    at org.openqa.selenium.remote.ErrorHandler.createThrowable (ErrorHandler.java:206)
+    at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed (ErrorHandler.java:158)
+    at org.openqa.selenium.remote.RemoteWebDriver.execute (RemoteWebDriver.java:678)
+    at org.openqa.selenium.remote.RemoteWebElement.execute (RemoteWebElement.java:327)
+    at org.openqa.selenium.remote.RemoteWebElement.click (RemoteWebElement.java:85)
+    at sun.reflect.GeneratedMethodAccessor8.invoke (None:-1)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke (None:-1)
+    at java.lang.reflect.Method.invoke (None:-1)
+    at org.openqa.selenium.support.events.EventFiringWebDriver$EventFiringWebElement$1.invoke (EventFiringWebDriver.java:335)
+    at com.sun.proxy.$Proxy2.click (None:-1)
+    at org.openqa.selenium.support.events.EventFiringWebDriver$EventFiringWebElement.click (EventFiringWebDriver.java:348)
+    at sun.reflect.GeneratedMethodAccessor8.invoke (None:-1)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke (None:-1)
+    at java.lang.reflect.Method.invoke (None:-1)
+    at org.openqa.selenium.remote.server.KnownElements$1.invoke (KnownElements.java:64)
+    at com.sun.proxy.$Proxy3.click (None:-1)
+    at org.openqa.selenium.remote.server.handler.ClickElement.call (ClickElement.java:30)
+    at org.openqa.selenium.remote.server.handler.ClickElement.call (ClickElement.java:1)
+    at java.util.concurrent.FutureTask.run (None:-1)
+    at org.openqa.selenium.remote.server.DefaultSession$1.run (DefaultSession.java:176)
+    at java.util.concurrent.ThreadPoolExecutor.runWorker (None:-1)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.run (None:-1)
+    at java.lang.Thread.run (None:-1)
+search 精品课 failed.
+Traceback (most recent call last):
+  File "/opt/autoTest_pro/webmgr/platformTest/level_D/test_bb14_jpkCfgs_sta.py", line 81, in test_bsearch_cfg_jpks
+    driver.find_element_by_xpath("//table[@id='excellentclassroomtable']/tbody/tr/td[3]").text)
+AssertionError: u'\u7cbe\u54c1\u8bfe' != u'720P'
+- ç²¾åè¯¾
++ 720P
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt26.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bupdate_cfg_jpks: 修改精品课模板信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt26.3')" >
+        pass</a>
+
+    <div id='div_pt26.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt26.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt26.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+修改中心设备精品课堂信息：720PP
+Message: element not visible
+  (Session info: chrome=60.0.3112.113)
+  (Driver info: chromedriver=2.30.477700 (0057494ad8732195794a7b32078424f92a5fce41),platform=Windows NT 10.0.14393 x86_64) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 59 milliseconds
+Build info: version: '2.53.0', revision: '35ae25b', time: '2016-03-15 17:00:58'
+System info: host: 'xungejiaoyu-PC', ip: '10.1.41.39', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_102'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities [{applicationCacheEnabled=false, rotatable=false, mobileEmulationEnabled=false, networkConnectionEnabled=false, chrome={chromedriverVersion=2.30.477700 (0057494ad8732195794a7b32078424f92a5fce41), userDataDir=C:\Users\XUNGEJ~1\AppData\Local\Temp\scoped_dir68968_29966}, takesHeapSnapshot=true, pageLoadStrategy=normal, databaseEnabled=false, handlesAlerts=true, hasTouchScreen=false, version=60.0.3112.113, platform=XP, browserConnectionEnabled=false, nativeEvents=true, acceptSslCerts=true, locationContextEnabled=true, webStorageEnabled=true, browserName=chrome, takesScreenshot=true, javascriptEnabled=true, cssSelectorsEnabled=true, unexpectedAlertBehaviour=}]
+Session ID: 2f366c8516116a79df8ce89da2bcc68b
+Screenshot: available via screen
+Stacktrace:
+    at sun.reflect.NativeConstructorAccessorImpl.newInstance0 (None:-2)
+    at sun.reflect.NativeConstructorAccessorImpl.newInstance (None:-1)
+    at sun.reflect.DelegatingConstructorAccessorImpl.newInstance (None:-1)
+    at java.lang.reflect.Constructor.newInstance (None:-1)
+    at org.openqa.selenium.remote.ErrorHandler.createThrowable (ErrorHandler.java:206)
+    at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed (ErrorHandler.java:158)
+    at org.openqa.selenium.remote.RemoteWebDriver.execute (RemoteWebDriver.java:678)
+    at org.openqa.selenium.remote.RemoteWebElement.execute (RemoteWebElement.java:327)
+    at org.openqa.selenium.remote.RemoteWebElement.click (RemoteWebElement.java:85)
+    at sun.reflect.GeneratedMethodAccessor8.invoke (None:-1)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke (None:-1)
+    at java.lang.reflect.Method.invoke (None:-1)
+    at org.openqa.selenium.support.events.EventFiringWebDriver$EventFiringWebElement$1.invoke (EventFiringWebDriver.java:335)
+    at com.sun.proxy.$Proxy2.click (None:-1)
+    at org.openqa.selenium.support.events.EventFiringWebDriver$EventFiringWebElement.click (EventFiringWebDriver.java:348)
+    at sun.reflect.GeneratedMethodAccessor8.invoke (None:-1)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke (None:-1)
+    at java.lang.reflect.Method.invoke (None:-1)
+    at org.openqa.selenium.remote.server.KnownElements$1.invoke (KnownElements.java:64)
+    at com.sun.proxy.$Proxy3.click (None:-1)
+    at org.openqa.selenium.remote.server.handler.ClickElement.call (ClickElement.java:30)
+    at org.openqa.selenium.remote.server.handler.ClickElement.call (ClickElement.java:1)
+    at java.util.concurrent.FutureTask.run (None:-1)
+    at org.openqa.selenium.remote.server.DefaultSession$1.run (DefaultSession.java:176)
+    at java.util.concurrent.ThreadPoolExecutor.runWorker (None:-1)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.run (None:-1)
+    at java.lang.Thread.run (None:-1)
+修改：720PP 失败。
+修改中心设备精品课堂信息：720精品_课480p
+Message: element not visible
+  (Session info: chrome=60.0.3112.113)
+  (Driver info: chromedriver=2.30.477700 (0057494ad8732195794a7b32078424f92a5fce41),platform=Windows NT 10.0.14393 x86_64) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 66 milliseconds
+Build info: version: '2.53.0', revision: '35ae25b', time: '2016-03-15 17:00:58'
+System info: host: 'xungejiaoyu-PC', ip: '10.1.41.39', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_102'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities [{applicationCacheEnabled=false, rotatable=false, mobileEmulationEnabled=false, networkConnectionEnabled=false, chrome={chromedriverVersion=2.30.477700 (0057494ad8732195794a7b32078424f92a5fce41), userDataDir=C:\Users\XUNGEJ~1\AppData\Local\Temp\scoped_dir68968_29966}, takesHeapSnapshot=true, pageLoadStrategy=normal, databaseEnabled=false, handlesAlerts=true, hasTouchScreen=false, version=60.0.3112.113, platform=XP, browserConnectionEnabled=false, nativeEvents=true, acceptSslCerts=true, locationContextEnabled=true, webStorageEnabled=true, browserName=chrome, takesScreenshot=true, javascriptEnabled=true, cssSelectorsEnabled=true, unexpectedAlertBehaviour=}]
+Session ID: 2f366c8516116a79df8ce89da2bcc68b
+Screenshot: available via screen
+Stacktrace:
+    at sun.reflect.NativeConstructorAccessorImpl.newInstance0 (None:-2)
+    at sun.reflect.NativeConstructorAccessorImpl.newInstance (None:-1)
+    at sun.reflect.DelegatingConstructorAccessorImpl.newInstance (None:-1)
+    at java.lang.reflect.Constructor.newInstance (None:-1)
+    at org.openqa.selenium.remote.ErrorHandler.createThrowable (ErrorHandler.java:206)
+    at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed (ErrorHandler.java:158)
+    at org.openqa.selenium.remote.RemoteWebDriver.execute (RemoteWebDriver.java:678)
+    at org.openqa.selenium.remote.RemoteWebElement.execute (RemoteWebElement.java:327)
+    at org.openqa.selenium.remote.RemoteWebElement.click (RemoteWebElement.java:85)
+    at sun.reflect.GeneratedMethodAccessor8.invoke (None:-1)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke (None:-1)
+    at java.lang.reflect.Method.invoke (None:-1)
+    at org.openqa.selenium.support.events.EventFiringWebDriver$EventFiringWebElement$1.invoke (EventFiringWebDriver.java:335)
+    at com.sun.proxy.$Proxy2.click (None:-1)
+    at org.openqa.selenium.support.events.EventFiringWebDriver$EventFiringWebElement.click (EventFiringWebDriver.java:348)
+    at sun.reflect.GeneratedMethodAccessor8.invoke (None:-1)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke (None:-1)
+    at java.lang.reflect.Method.invoke (None:-1)
+    at org.openqa.selenium.remote.server.KnownElements$1.invoke (KnownElements.java:64)
+    at com.sun.proxy.$Proxy3.click (None:-1)
+    at org.openqa.selenium.remote.server.handler.ClickElement.call (ClickElement.java:30)
+    at org.openqa.selenium.remote.server.handler.ClickElement.call (ClickElement.java:1)
+    at java.util.concurrent.FutureTask.run (None:-1)
+    at org.openqa.selenium.remote.server.DefaultSession$1.run (DefaultSession.java:176)
+    at java.util.concurrent.ThreadPoolExecutor.runWorker (None:-1)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.run (None:-1)
+    at java.lang.Thread.run (None:-1)
+修改：720精品_课480p 失败。
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft26.4' class='none'>
+    <td class='errorCase'><div class='testcase'>test_del_cfg_jpks: 删除精品课模板_确定</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft26.4')" >
+        error</a>
+
+    <div id='div_ft26.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft26.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft26.4: loginfo:
+user:hnsadmin，platform:河南省教育局
+delete info:精品课
+Message: element not visible
+  (Session info: chrome=60.0.3112.113)
+  (Driver info: chromedriver=2.30.477700 (0057494ad8732195794a7b32078424f92a5fce41),platform=Windows NT 10.0.14393 x86_64) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 62 milliseconds
+Build info: version: '2.53.0', revision: '35ae25b', time: '2016-03-15 17:00:58'
+System info: host: 'xungejiaoyu-PC', ip: '10.1.41.39', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_102'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities [{applicationCacheEnabled=false, rotatable=false, mobileEmulationEnabled=false, networkConnectionEnabled=false, chrome={chromedriverVersion=2.30.477700 (0057494ad8732195794a7b32078424f92a5fce41), userDataDir=C:\Users\XUNGEJ~1\AppData\Local\Temp\scoped_dir64048_9909}, takesHeapSnapshot=true, pageLoadStrategy=normal, databaseEnabled=false, handlesAlerts=true, hasTouchScreen=false, version=60.0.3112.113, platform=XP, browserConnectionEnabled=false, nativeEvents=true, acceptSslCerts=true, locationContextEnabled=true, webStorageEnabled=true, browserName=chrome, takesScreenshot=true, javascriptEnabled=true, cssSelectorsEnabled=true, unexpectedAlertBehaviour=}]
+Session ID: 9ce52a7a22abcfd6b2455ea4b61d9e2d
+Screenshot: available via screen
+Stacktrace:
+    at sun.reflect.NativeConstructorAccessorImpl.newInstance0 (None:-2)
+    at sun.reflect.NativeConstructorAccessorImpl.newInstance (None:-1)
+    at sun.reflect.DelegatingConstructorAccessorImpl.newInstance (None:-1)
+    at java.lang.reflect.Constructor.newInstance (None:-1)
+    at org.openqa.selenium.remote.ErrorHandler.createThrowable (ErrorHandler.java:206)
+    at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed (ErrorHandler.java:158)
+    at org.openqa.selenium.remote.RemoteWebDriver.execute (RemoteWebDriver.java:678)
+    at org.openqa.selenium.remote.RemoteWebElement.execute (RemoteWebElement.java:327)
+    at org.openqa.selenium.remote.RemoteWebElement.click (RemoteWebElement.java:85)
+    at sun.reflect.GeneratedMethodAccessor8.invoke (None:-1)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke (None:-1)
+    at java.lang.reflect.Method.invoke (None:-1)
+    at org.openqa.selenium.support.events.EventFiringWebDriver$EventFiringWebElement$1.invoke (EventFiringWebDriver.java:335)
+    at com.sun.proxy.$Proxy2.click (None:-1)
+    at org.openqa.selenium.support.events.EventFiringWebDriver$EventFiringWebElement.click (EventFiringWebDriver.java:348)
+    at sun.reflect.GeneratedMethodAccessor8.invoke (None:-1)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke (None:-1)
+    at java.lang.reflect.Method.invoke (None:-1)
+    at org.openqa.selenium.remote.server.KnownElements$1.invoke (KnownElements.java:64)
+    at com.sun.proxy.$Proxy3.click (None:-1)
+    at org.openqa.selenium.remote.server.handler.ClickElement.call (ClickElement.java:30)
+    at org.openqa.selenium.remote.server.handler.ClickElement.call (ClickElement.java:1)
+    at java.util.concurrent.FutureTask.run (None:-1)
+    at org.openqa.selenium.remote.server.DefaultSession$1.run (DefaultSession.java:176)
+    at java.util.concurrent.ThreadPoolExecutor.runWorker (None:-1)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.run (None:-1)
+    at java.lang.Thread.run (None:-1)
+delete 精品课 failed.
+Traceback (most recent call last):
+  File "/opt/autoTest_pro/webmgr/platformTest/level_D/test_bb14_jpkCfgs_sta.py", line 107, in test_del_cfg_jpks
+    self.assertEqual(u"å é¤æåï¼", driver.find_element_by_css_selector(".layui-layer-content").text)
+  File "/usr/local/lib/python2.7/site-packages/selenium/webdriver/remote/webdriver.py", line 498, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/site-packages/selenium/webdriver/remote/webdriver.py", line 832, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/site-packages/selenium/webdriver/remote/webdriver.py", line 297, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/site-packages/selenium/webdriver/remote/errorhandler.py", line 194, in check_response
+    raise exception_class(message, screen, stacktrace)
+NoSuchElementException: Message: no such element: Unable to locate element: {"method":"css selector","selector":".layui-layer-content"}
+  (Session info: chrome=60.0.3112.113)
+  (Driver info: chromedriver=2.30.477700 (0057494ad8732195794a7b32078424f92a5fce41),platform=Windows NT 10.0.14393 x86_64) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 8.06 seconds
+For documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html
+Build info: version: '2.53.0', revision: '35ae25b', time: '2016-03-15 17:00:58'
+System info: host: 'xungejiaoyu-PC', ip: '10.1.41.39', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_102'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities [{applicationCacheEnabled=false, rotatable=false, mobileEmulationEnabled=false, networkConnectionEnabled=false, chrome={chromedriverVersion=2.30.477700 (0057494ad8732195794a7b32078424f92a5fce41), userDataDir=C:\Users\XUNGEJ~1\AppData\Local\Temp\scoped_dir64048_9909}, takesHeapSnapshot=true, pageLoadStrategy=normal, databaseEnabled=false, handlesAlerts=true, hasTouchScreen=false, version=60.0.3112.113, platform=XP, browserConnectionEnabled=false, nativeEvents=true, acceptSslCerts=true, locationContextEnabled=true, webStorageEnabled=true, browserName=chrome, takesScreenshot=true, javascriptEnabled=true, cssSelectorsEnabled=true, unexpectedAlertBehaviour=}]
+Session ID: 9ce52a7a22abcfd6b2455ea4b61d9e2d
+*** Element info: {Using=css selector, value=.layui-layer-content}
+Screenshot: available via screen
+Stacktrace:
+    at sun.reflect.GeneratedConstructorAccessor81.newInstance (None:-1)
+    at sun.reflect.DelegatingConstructorAccessorImpl.newInstance (None:-1)
+    at java.lang.reflect.Constructor.newInstance (None:-1)
+    at org.openqa.selenium.remote.ErrorHandler.createThrowable (ErrorHandler.java:206)
+    at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed (ErrorHandler.java:158)
+    at org.openqa.selenium.remote.RemoteWebDriver.execute (RemoteWebDriver.java:678)
+    at org.openqa.selenium.remote.RemoteWebDriver.findElement (RemoteWebDriver.java:363)
+    at org.openqa.selenium.remote.RemoteWebDriver.findElementByCssSelector (RemoteWebDriver.java:492)
+    at org.openqa.selenium.By$ByCssSelector.findElement (By.java:430)
+    at org.openqa.selenium.remote.RemoteWebDriver.findElement (RemoteWebDriver.java:355)
+    at sun.reflect.GeneratedMethodAccessor11.invoke (None:-1)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke (None:-1)
+    at java.lang.reflect.Method.invoke (None:-1)
+    at org.openqa.selenium.support.events.EventFiringWebDriver$2.invoke (EventFiringWebDriver.java:103)
+    at com.sun.proxy.$Proxy1.findElement (None:-1)
+    at org.openqa.selenium.support.events.EventFiringWebDriver.findElement (EventFiringWebDriver.java:188)
+    at org.openqa.selenium.remote.server.handler.FindElement.call (FindElement.java:48)
+    at org.openqa.selenium.remote.server.handler.FindElement.call (FindElement.java:1)
+    at java.util.concurrent.FutureTask.run (None:-1)
+    at org.openqa.selenium.remote.server.DefaultSession$1.run (DefaultSession.java:176)
+    at java.util.concurrent.ThreadPoolExecutor.runWorker (None:-1)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.run (None:-1)
+    at java.lang.Thread.run (None:-1)
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_bb15_listenerCfgs_sta.ListenserCfgsMgr: '听讲模板管理</td>
+    <td>4</td>
+    <td>4</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c27',4)">Detail</a></td>
+</tr>
+
+<tr id='pt27.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_cfg_listener_lessons: 添加听讲下课模板</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt27.1')" >
+        pass</a>
+
+    <div id='div_pt27.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt27.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt27.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+add info:听讲下课
+add 听讲下课 end.
+add info:听讲_下课_1
+add 听讲_下课_1 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt27.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bsearch_cfg_listener_lessons: 查询听讲下课模板信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt27.2')" >
+        pass</a>
+
+    <div id='div_pt27.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt27.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt27.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+search info:听讲下课
+search 听讲下课 end.
+search info:听讲_下课_1
+search 听讲_下课_1 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt27.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bupdate_cfg_listener_lessons: 查询听讲下课模板信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt27.3')" >
+        pass</a>
+
+    <div id='div_pt27.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt27.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt27.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+修改听课下课信息：下课模板测试数据
+add 下课模板测试数据 success.
+修改听课下课信息：听讲下课
+add 听讲下课 success.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt27.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_cfg_listener_lessons: 删除听讲下课模板_确定</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt27.4')" >
+        pass</a>
+
+    <div id='div_pt27.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt27.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt27.4: loginfo:
+user:hnsadmin，platform:河南省教育局
+delete info:听讲下课
+delete 听讲下课 end.
+delete info:听讲_下课_1
+delete 听讲_下课_1 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_bb16_speakerCfgs_sta.SpeackCfgsMgr: '主讲模板管理</td>
+    <td>4</td>
+    <td>4</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c28',4)">Detail</a></td>
+</tr>
+
+<tr id='pt28.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_cfg_speaker_lessons: 添加主讲下课模板</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt28.1')" >
+        pass</a>
+
+    <div id='div_pt28.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt28.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt28.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+add info:a主讲下课
+add a主讲下课 end.
+add info:主讲_下课_1
+add 主讲_下课_1 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt28.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bsearch_cfg_speaker_lessons: 查询主讲下课模板信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt28.2')" >
+        pass</a>
+
+    <div id='div_pt28.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt28.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt28.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+search info:a主讲下课
+search a主讲下课 end.
+search info:主讲_下课_1
+search 主讲_下课_1 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt28.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_bupdate_cfg_speaker_lessons: 修改主讲下课模板信息</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt28.3')" >
+        pass</a>
+
+    <div id='div_pt28.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt28.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt28.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+修改主讲下课信息：下课模板测试数据
+add 下课模板测试数据 success.
+修改主讲下课信息：a主讲下课
+add a主讲下课 success.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt28.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_cfg_speaker_lessons: 删除主讲下课模板_确定</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt28.4')" >
+        pass</a>
+
+    <div id='div_pt28.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt28.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt28.4: loginfo:
+user:hnsadmin，platform:河南省教育局
+delete info:a主讲下课
+delete a主讲下课 end.
+delete info:主讲_下课_1
+delete 主讲_下课_1 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='errorClass'>
+    <td>level_D.test_bb17_emailMgr_sta.EmailMgr: '邮件服务器管理</td>
+    <td>3</td>
+    <td>1</td>
+    <td>1</td>
+    <td>1</td>
+    <td><a href="javascript:showClassDetail('c29',3)">Detail</a></td>
+</tr>
+
+<tr id='ft29.1' class='none'>
+    <td class='failCase'><div class='testcase'>test_add_emails: 添加邮件服务器</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft29.1')" >
+        fail</a>
+
+    <div id='div_ft29.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft29.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft29.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+add info:smtp.162.com,haosea@qq.com,111111
+Message: invalid element state: Element is not currently interactable and may not be manipulated
+  (Session info: chrome=60.0.3112.113)
+  (Driver info: chromedriver=2.30.477700 (0057494ad8732195794a7b32078424f92a5fce41),platform=Windows NT 10.0.14393 x86_64) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 62 milliseconds
+Build info: version: '2.53.0', revision: '35ae25b', time: '2016-03-15 17:00:58'
+System info: host: 'xungejiaoyu-PC', ip: '10.1.41.39', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_102'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities [{applicationCacheEnabled=false, rotatable=false, mobileEmulationEnabled=false, networkConnectionEnabled=false, chrome={chromedriverVersion=2.30.477700 (0057494ad8732195794a7b32078424f92a5fce41), userDataDir=C:\Users\XUNGEJ~1\AppData\Local\Temp\scoped_dir67196_29926}, takesHeapSnapshot=true, pageLoadStrategy=normal, databaseEnabled=false, handlesAlerts=true, hasTouchScreen=false, version=60.0.3112.113, platform=XP, browserConnectionEnabled=false, nativeEvents=true, acceptSslCerts=true, locationContextEnabled=true, webStorageEnabled=true, browserName=chrome, takesScreenshot=true, javascriptEnabled=true, cssSelectorsEnabled=true, unexpectedAlertBehaviour=}]
+Session ID: 277fdd570dd69b41449d5f2c6cda21b7
+Screenshot: available via screen
+Stacktrace:
+    at sun.reflect.GeneratedConstructorAccessor76.newInstance (None:-1)
+    at sun.reflect.DelegatingConstructorAccessorImpl.newInstance (None:-1)
+    at java.lang.reflect.Constructor.newInstance (None:-1)
+    at org.openqa.selenium.remote.ErrorHandler.createThrowable (ErrorHandler.java:206)
+    at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed (ErrorHandler.java:158)
+    at org.openqa.selenium.remote.RemoteWebDriver.execute (RemoteWebDriver.java:678)
+    at org.openqa.selenium.remote.RemoteWebElement.execute (RemoteWebElement.java:327)
+    at org.openqa.selenium.remote.RemoteWebElement.clear (RemoteWebElement.java:140)
+    at sun.reflect.GeneratedMethodAccessor14.invoke (None:-1)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke (None:-1)
+    at java.lang.reflect.Method.invoke (None:-1)
+    at org.openqa.selenium.support.events.EventFiringWebDriver$EventFiringWebElement$1.invoke (EventFiringWebDriver.java:335)
+    at com.sun.proxy.$Proxy2.clear (None:-1)
+    at org.openqa.selenium.support.events.EventFiringWebDriver$EventFiringWebElement.clear (EventFiringWebDriver.java:364)
+    at sun.reflect.GeneratedMethodAccessor14.invoke (None:-1)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke (None:-1)
+    at java.lang.reflect.Method.invoke (None:-1)
+    at org.openqa.selenium.remote.server.KnownElements$1.invoke (KnownElements.java:64)
+    at com.sun.proxy.$Proxy3.clear (None:-1)
+    at org.openqa.selenium.remote.server.handler.ClearElement.call (ClearElement.java:30)
+    at org.openqa.selenium.remote.server.handler.ClearElement.call (ClearElement.java:1)
+    at java.util.concurrent.FutureTask.run (None:-1)
+    at org.openqa.selenium.remote.server.DefaultSession$1.run (DefaultSession.java:176)
+    at java.util.concurrent.ThreadPoolExecutor.runWorker (None:-1)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.run (None:-1)
+    at java.lang.Thread.run (None:-1)
+add smtp.162.com failed.
+Traceback (most recent call last):
+  File "/opt/autoTest_pro/webmgr/platformTest/level_D/test_bb17_emailMgr_sta.py", line 61, in test_add_emails
+    self.assertEqual(u"æ·»å æåï¼", driver.find_element_by_css_selector(".layui-layer-content").text)
+AssertionError: u'\u6dfb\u52a0\u6210\u529f\uff01' != u'\u90ae\u7bb1\u670d\u52a1\u5668\u5df2\u5b58\u5728'
+- æ·»å æåï¼
++ é®ç®±æå¡å¨å·²å­å¨
+
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft29.2' class='none'>
+    <td class='errorCase'><div class='testcase'>test_del_emails: 删除邮件服务器_确定</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft29.2')" >
+        error</a>
+
+    <div id='div_ft29.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft29.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft29.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+ delete email end.
+Message: no such element: Unable to locate element: {"method":"xpath","selector":"//button[@id='current']"}
+  (Session info: chrome=60.0.3112.113)
+  (Driver info: chromedriver=2.30.477700 (0057494ad8732195794a7b32078424f92a5fce41),platform=Windows NT 10.0.14393 x86_64) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 8.03 seconds
+For documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html
+Build info: version: '2.53.0', revision: '35ae25b', time: '2016-03-15 17:00:58'
+System info: host: 'xungejiaoyu-PC', ip: '10.1.41.39', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_102'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities [{applicationCacheEnabled=false, rotatable=false, mobileEmulationEnabled=false, networkConnectionEnabled=false, chrome={chromedriverVersion=2.30.477700 (0057494ad8732195794a7b32078424f92a5fce41), userDataDir=C:\Users\XUNGEJ~1\AppData\Local\Temp\scoped_dir66960_11427}, takesHeapSnapshot=true, pageLoadStrategy=normal, databaseEnabled=false, handlesAlerts=true, hasTouchScreen=false, version=60.0.3112.113, platform=XP, browserConnectionEnabled=false, nativeEvents=true, acceptSslCerts=true, locationContextEnabled=true, webStorageEnabled=true, browserName=chrome, takesScreenshot=true, javascriptEnabled=true, cssSelectorsEnabled=true, unexpectedAlertBehaviour=}]
+Session ID: e042d7a0fa0ae942ca232aacf49c2c46
+*** Element info: {Using=xpath, value=//button[@id='current']}
+Screenshot: available via screen
+Stacktrace:
+    at sun.reflect.GeneratedConstructorAccessor81.newInstance (None:-1)
+    at sun.reflect.DelegatingConstructorAccessorImpl.newInstance (None:-1)
+    at java.lang.reflect.Constructor.newInstance (None:-1)
+    at org.openqa.selenium.remote.ErrorHandler.createThrowable (ErrorHandler.java:206)
+    at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed (ErrorHandler.java:158)
+    at org.openqa.selenium.remote.RemoteWebDriver.execute (RemoteWebDriver.java:678)
+    at org.openqa.selenium.remote.RemoteWebDriver.findElement (RemoteWebDriver.java:363)
+    at org.openqa.selenium.remote.RemoteWebDriver.findElementByXPath (RemoteWebDriver.java:500)
+    at org.openqa.selenium.By$ByXPath.findElement (By.java:361)
+    at org.openqa.selenium.remote.RemoteWebDriver.findElement (RemoteWebDriver.java:355)
+    at sun.reflect.GeneratedMethodAccessor11.invoke (None:-1)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke (None:-1)
+    at java.lang.reflect.Method.invoke (None:-1)
+    at org.openqa.selenium.support.events.EventFiringWebDriver$2.invoke (EventFiringWebDriver.java:103)
+    at com.sun.proxy.$Proxy1.findElement (None:-1)
+    at org.openqa.selenium.support.events.EventFiringWebDriver.findElement (EventFiringWebDriver.java:188)
+    at org.openqa.selenium.remote.server.handler.FindElement.call (FindElement.java:48)
+    at org.openqa.selenium.remote.server.handler.FindElement.call (FindElement.java:1)
+    at java.util.concurrent.FutureTask.run (None:-1)
+    at org.openqa.selenium.remote.server.DefaultSession$1.run (DefaultSession.java:176)
+    at java.util.concurrent.ThreadPoolExecutor.runWorker (None:-1)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.run (None:-1)
+    at java.lang.Thread.run (None:-1)
+delete email failed.
+Traceback (most recent call last):
+  File "/opt/autoTest_pro/webmgr/platformTest/level_D/test_bb17_emailMgr_sta.py", line 87, in test_del_emails
+    self.assertEqual(u"å é¤æåï¼", driver.find_element_by_css_selector(".layui-layer-content").text)
+  File "/usr/local/lib/python2.7/site-packages/selenium/webdriver/remote/webdriver.py", line 498, in find_element_by_css_selector
+    return self.find_element(by=By.CSS_SELECTOR, value=css_selector)
+  File "/usr/local/lib/python2.7/site-packages/selenium/webdriver/remote/webdriver.py", line 832, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python2.7/site-packages/selenium/webdriver/remote/webdriver.py", line 297, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python2.7/site-packages/selenium/webdriver/remote/errorhandler.py", line 194, in check_response
+    raise exception_class(message, screen, stacktrace)
+NoSuchElementException: Message: no such element: Unable to locate element: {"method":"css selector","selector":".layui-layer-content"}
+  (Session info: chrome=60.0.3112.113)
+  (Driver info: chromedriver=2.30.477700 (0057494ad8732195794a7b32078424f92a5fce41),platform=Windows NT 10.0.14393 x86_64) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 8.05 seconds
+For documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html
+Build info: version: '2.53.0', revision: '35ae25b', time: '2016-03-15 17:00:58'
+System info: host: 'xungejiaoyu-PC', ip: '10.1.41.39', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_102'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities [{applicationCacheEnabled=false, rotatable=false, mobileEmulationEnabled=false, networkConnectionEnabled=false, chrome={chromedriverVersion=2.30.477700 (0057494ad8732195794a7b32078424f92a5fce41), userDataDir=C:\Users\XUNGEJ~1\AppData\Local\Temp\scoped_dir66960_11427}, takesHeapSnapshot=true, pageLoadStrategy=normal, databaseEnabled=false, handlesAlerts=true, hasTouchScreen=false, version=60.0.3112.113, platform=XP, browserConnectionEnabled=false, nativeEvents=true, acceptSslCerts=true, locationContextEnabled=true, webStorageEnabled=true, browserName=chrome, takesScreenshot=true, javascriptEnabled=true, cssSelectorsEnabled=true, unexpectedAlertBehaviour=}]
+Session ID: e042d7a0fa0ae942ca232aacf49c2c46
+*** Element info: {Using=css selector, value=.layui-layer-content}
+Screenshot: available via screen
+Stacktrace:
+    at sun.reflect.GeneratedConstructorAccessor81.newInstance (None:-1)
+    at sun.reflect.DelegatingConstructorAccessorImpl.newInstance (None:-1)
+    at java.lang.reflect.Constructor.newInstance (None:-1)
+    at org.openqa.selenium.remote.ErrorHandler.createThrowable (ErrorHandler.java:206)
+    at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed (ErrorHandler.java:158)
+    at org.openqa.selenium.remote.RemoteWebDriver.execute (RemoteWebDriver.java:678)
+    at org.openqa.selenium.remote.RemoteWebDriver.findElement (RemoteWebDriver.java:363)
+    at org.openqa.selenium.remote.RemoteWebDriver.findElementByCssSelector (RemoteWebDriver.java:492)
+    at org.openqa.selenium.By$ByCssSelector.findElement (By.java:430)
+    at org.openqa.selenium.remote.RemoteWebDriver.findElement (RemoteWebDriver.java:355)
+    at sun.reflect.GeneratedMethodAccessor11.invoke (None:-1)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke (None:-1)
+    at java.lang.reflect.Method.invoke (None:-1)
+    at org.openqa.selenium.support.events.EventFiringWebDriver$2.invoke (EventFiringWebDriver.java:103)
+    at com.sun.proxy.$Proxy1.findElement (None:-1)
+    at org.openqa.selenium.support.events.EventFiringWebDriver.findElement (EventFiringWebDriver.java:188)
+    at org.openqa.selenium.remote.server.handler.FindElement.call (FindElement.java:48)
+    at org.openqa.selenium.remote.server.handler.FindElement.call (FindElement.java:1)
+    at java.util.concurrent.FutureTask.run (None:-1)
+    at org.openqa.selenium.remote.server.DefaultSession$1.run (DefaultSession.java:176)
+    at java.util.concurrent.ThreadPoolExecutor.runWorker (None:-1)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.run (None:-1)
+    at java.lang.Thread.run (None:-1)
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt29.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_update_emails: 修改邮件服务器</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt29.3')" >
+        pass</a>
+
+    <div id='div_pt29.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt29.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt29.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+修改邮箱服务管理：111111,519484955@qq.com,111111
+Message: no such element: Unable to locate element: {"method":"xpath","selector":"//td[7]/button"}
+  (Session info: chrome=60.0.3112.113)
+  (Driver info: chromedriver=2.30.477700 (0057494ad8732195794a7b32078424f92a5fce41),platform=Windows NT 10.0.14393 x86_64) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 8.05 seconds
+For documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html
+Build info: version: '2.53.0', revision: '35ae25b', time: '2016-03-15 17:00:58'
+System info: host: 'xungejiaoyu-PC', ip: '10.1.41.39', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_102'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities [{applicationCacheEnabled=false, rotatable=false, mobileEmulationEnabled=false, networkConnectionEnabled=false, chrome={chromedriverVersion=2.30.477700 (0057494ad8732195794a7b32078424f92a5fce41), userDataDir=C:\Users\XUNGEJ~1\AppData\Local\Temp\scoped_dir61208_3726}, takesHeapSnapshot=true, pageLoadStrategy=normal, databaseEnabled=false, handlesAlerts=true, hasTouchScreen=false, version=60.0.3112.113, platform=XP, browserConnectionEnabled=false, nativeEvents=true, acceptSslCerts=true, locationContextEnabled=true, webStorageEnabled=true, browserName=chrome, takesScreenshot=true, javascriptEnabled=true, cssSelectorsEnabled=true, unexpectedAlertBehaviour=}]
+Session ID: 69c5086bc40c76fbed24b47e22ba40bb
+*** Element info: {Using=xpath, value=//td[7]/button}
+Screenshot: available via screen
+Stacktrace:
+    at sun.reflect.GeneratedConstructorAccessor81.newInstance (None:-1)
+    at sun.reflect.DelegatingConstructorAccessorImpl.newInstance (None:-1)
+    at java.lang.reflect.Constructor.newInstance (None:-1)
+    at org.openqa.selenium.remote.ErrorHandler.createThrowable (ErrorHandler.java:206)
+    at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed (ErrorHandler.java:158)
+    at org.openqa.selenium.remote.RemoteWebDriver.execute (RemoteWebDriver.java:678)
+    at org.openqa.selenium.remote.RemoteWebDriver.findElement (RemoteWebDriver.java:363)
+    at org.openqa.selenium.remote.RemoteWebDriver.findElementByXPath (RemoteWebDriver.java:500)
+    at org.openqa.selenium.By$ByXPath.findElement (By.java:361)
+    at org.openqa.selenium.remote.RemoteWebDriver.findElement (RemoteWebDriver.java:355)
+    at sun.reflect.GeneratedMethodAccessor11.invoke (None:-1)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke (None:-1)
+    at java.lang.reflect.Method.invoke (None:-1)
+    at org.openqa.selenium.support.events.EventFiringWebDriver$2.invoke (EventFiringWebDriver.java:103)
+    at com.sun.proxy.$Proxy1.findElement (None:-1)
+    at org.openqa.selenium.support.events.EventFiringWebDriver.findElement (EventFiringWebDriver.java:188)
+    at org.openqa.selenium.remote.server.handler.FindElement.call (FindElement.java:48)
+    at org.openqa.selenium.remote.server.handler.FindElement.call (FindElement.java:1)
+    at java.util.concurrent.FutureTask.run (None:-1)
+    at org.openqa.selenium.remote.server.DefaultSession$1.run (DefaultSession.java:176)
+    at java.util.concurrent.ThreadPoolExecutor.runWorker (None:-1)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.run (None:-1)
+    at java.lang.Thread.run (None:-1)
+修改：smtp.163.com 失败。
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_bb18_addSchoolData_sta.GenerateSystemData: '学校教室设备基础数据添加</td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c30',1)">Detail</a></td>
+</tr>
+
+<tr id='pt30.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_agenerateSchoolInfo: 生成学校教室设备</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt30.1')" >
+        pass</a>
+
+    <div id='div_pt30.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt30.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt30.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+添加学校信息：郑州一中，高中，郑州市
+添加：郑州一中 成功。
+添加用户的信息：user,teacher
+添加用户teacher成功。
+添加用户的信息：user1,teacher1
+添加用户teacher1成功。
+add info:81教室,1
+add 81教室 end.
+(u'\u90d1\u5dde\u4e00\u4e2d', u'\u90d1\u5dde\u4e00\u4e2d')
+add info:10.1.0.81终端,81教室
+add 10.1.0.81终端 end.
+add info:82教室,1
+add 82教室 end.
+(u'\u90d1\u5dde\u4e00\u4e2d', u'\u90d1\u5dde\u4e00\u4e2d')
+add info:10.1.0.82终端,82教室
+add 10.1.0.82终端 end.
+add info:130教室,1
+add 130教室 end.
+(u'\u90d1\u5dde\u4e00\u4e2d', u'\u90d1\u5dde\u4e00\u4e2d')
+add info:10.1.0.130终端,130教室
+add 10.1.0.130终端 end.
+add info:131教室,1
+add 131教室 end.
+(u'\u90d1\u5dde\u4e00\u4e2d', u'\u90d1\u5dde\u4e00\u4e2d')
+add info:10.1.0.131终端,131教室
+add 10.1.0.131终端 end.
+添加学校信息：开封一中，高中，郑州市
+添加：开封一中 成功。
+添加用户的信息：user,teacher
+添加用户teacher成功。
+添加用户的信息：user1,teacher1
+添加用户teacher1成功。
+add info:132教室,1
+add 132教室 end.
+(u'\u5f00\u5c01\u4e00\u4e2d', u'\u5f00\u5c01\u4e00\u4e2d')
+add info:10.1.0.132终端,132教室
+add 10.1.0.132终端 end.
+add info:133教室,1
+add 133教室 end.
+(u'\u5f00\u5c01\u4e00\u4e2d', u'\u5f00\u5c01\u4e00\u4e2d')
+add info:10.1.0.133终端,133教室
+add 10.1.0.133终端 end.
+add info:134教室,1
+add 134教室 end.
+(u'\u5f00\u5c01\u4e00\u4e2d', u'\u5f00\u5c01\u4e00\u4e2d')
+add info:10.1.0.134终端,134教室
+add 10.1.0.134终端 end.
+add info:135教室,1
+add 135教室 end.
+(u'\u5f00\u5c01\u4e00\u4e2d', u'\u5f00\u5c01\u4e00\u4e2d')
+add info:10.1.0.135终端,135教室
+add 10.1.0.135终端 end.
+add info:136教室,1
+add 136教室 end.
+(u'\u5f00\u5c01\u4e00\u4e2d', u'\u5f00\u5c01\u4e00\u4e2d')
+add info:10.1.0.136终端,136教室
+add 10.1.0.136终端 end.
+add info:137教室,1
+add 137教室 end.
+(u'\u5f00\u5c01\u4e00\u4e2d', u'\u5f00\u5c01\u4e00\u4e2d')
+add info:10.1.0.137终端,137教室
+add 10.1.0.137终端 end.
+add info:138教室,1
+add 138教室 end.
+(u'\u5f00\u5c01\u4e00\u4e2d', u'\u5f00\u5c01\u4e00\u4e2d')
+add info:10.1.0.138终端,138教室
+add 10.1.0.138终端 end.
+add info:139教室,1
+add 139教室 end.
+(u'\u5f00\u5c01\u4e00\u4e2d', u'\u5f00\u5c01\u4e00\u4e2d')
+add info:10.1.0.139终端,139教室
+add 10.1.0.139终端 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_bb19_addDriversData_sta.AdddriversData: '学校教室设备基础数据添加</td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c31',1)">Detail</a></td>
+</tr>
+
+<tr id='pt31.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_aconfLocalInteract: 添加配置中心消息中间件</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt31.1')" >
+        pass</a>
+
+    <div id='div_pt31.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt31.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt31.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+add info:10.1.41.56,8080,顶级消息中间件,80d0d5ec-9dad-4ec3-87ce-b4d2cf25ec2c
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_bb20_jycfgs_sta.jycfg: '教研评分规则管理</td>
+    <td>4</td>
+    <td>4</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c32',4)">Detail</a></td>
+</tr>
+
+<tr id='pt32.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_cfg_jymb</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt32.1')" >
+        pass</a>
+
+    <div id='div_pt32.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt32.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt32.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt32.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_alter_cfg_jymb</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt32.2')" >
+        pass</a>
+
+    <div id='div_pt32.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt32.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt32.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt32.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_check_cfg_jymb</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt32.3')" >
+        pass</a>
+
+    <div id='div_pt32.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt32.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt32.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt32.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_cfg_jymb</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt32.4')" >
+        pass</a>
+
+    <div id='div_pt32.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt32.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt32.4: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_bc20_hdkMgr_sta.InterActiveTeachingMgr: '课程管理</td>
+    <td>2</td>
+    <td>2</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c33',2)">Detail</a></td>
+</tr>
+
+<tr id='pt33.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_hdk: 添加互动课</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt33.1')" >
+        pass</a>
+
+    <div id='div_pt33.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt33.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt33.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt33.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_hdk: 删除互动课</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt33.2')" >
+        pass</a>
+
+    <div id='div_pt33.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt33.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt33.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_bc21_JpkMgr_sta.JpkMgr</td>
+    <td>2</td>
+    <td>2</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c34',2)">Detail</a></td>
+</tr>
+
+<tr id='pt34.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_jpk: 添加精品课堂</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt34.1')" >
+        pass</a>
+
+    <div id='div_pt34.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt34.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt34.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt34.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_excellentLesson: 删除精品课</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt34.2')" >
+        pass</a>
+
+    <div id='div_pt34.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt34.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt34.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+删除精品课。
+删除精品课成功。
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_D.test_bc22_jymgr_sta.jymgr: '教研管理</td>
+    <td>5</td>
+    <td>5</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c35',5)">Detail</a></td>
+</tr>
+
+<tr id='pt35.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_cfg_jyaddjymb</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt35.1')" >
+        pass</a>
+
+    <div id='div_pt35.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt35.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt35.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt35.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_cfg_jymb</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt35.2')" >
+        pass</a>
+
+    <div id='div_pt35.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt35.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt35.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt35.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_mgr_jykc</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt35.3')" >
+        pass</a>
+
+    <div id='div_pt35.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt35.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt35.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt35.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_mgr_jykeepkc</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt35.4')" >
+        pass</a>
+
+    <div id='div_pt35.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt35.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt35.4: loginfo:
+user:hnsadmin，platform:河南省教育局
+py_1509355412
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt35.5' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_del_mgr_jykc</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt35.5')" >
+        pass</a>
+
+    <div id='div_pt35.5' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt35.5').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt35.5: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_E.test_c0_cleanDBV2_sta.dbMgr: dbMgr</td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c36',1)">Detail</a></td>
+</tr>
+
+<tr id='pt36.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_resetDB: 重刷数据库</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt36.1')" >
+        pass</a>
+
+    <div id='div_pt36.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt36.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt36.1: http://10.1.41.56:6000/update.do
+http://10.1.41.56:6000/update.do
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_E.test_c1_updateDB_sta.dbMgr</td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c37',1)">Detail</a></td>
+</tr>
+
+<tr id='pt37.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_updateDB</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt37.1')" >
+        pass</a>
+
+    <div id='div_pt37.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt37.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt37.1: DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+DB connection info:
+  &gt;&gt;host: 10.1.41.56
+  &gt;&gt;user: root
+  &gt;&gt;password: Sanbu@123456
+  &gt;&gt;database: middle
+  &gt;&gt;port:13306
+updated successful.
+closed connection.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_E.test_c2_addTenantData_sta.TenantMgr: 租户管理场景</td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c38',1)">Detail</a></td>
+</tr>
+
+<tr id='pt38.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_tenant: 添加租户</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt38.1')" >
+        pass</a>
+
+    <div id='div_pt38.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt38.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt38.1: add tenant info: 河南省教育局
+add tenant 河南省教育局 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_E.test_c3_addSchoolData_sta.GenerateSystemData: 学校教室设备基础数据添加</td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c39',1)">Detail</a></td>
+</tr>
+
+<tr id='pt39.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_agenerateSchoolInfo: 生成学校教室设备</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt39.1')" >
+        pass</a>
+
+    <div id='div_pt39.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt39.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt39.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+添加学校信息：郑州一中，高中，郑州市
+添加：郑州一中 成功。
+添加用户的信息：user,teacher
+添加用户teacher成功。
+添加用户的信息：user1,teacher1
+添加用户teacher1成功。
+add info:81教室,1
+add 81教室 end.
+add info:10.1.0.81终端,81教室
+add 10.1.0.81终端 end.
+add info:82教室,1
+add 82教室 end.
+add info:10.1.0.82终端,82教室
+add 10.1.0.82终端 end.
+add info:130教室,1
+add 130教室 end.
+add info:10.1.0.130终端,130教室
+add 10.1.0.130终端 end.
+add info:131教室,1
+add 131教室 end.
+add info:10.1.0.131终端,131教室
+add 10.1.0.131终端 end.
+添加学校信息：开封一中，高中，郑州市
+添加：开封一中 成功。
+添加用户的信息：user,teacher
+添加用户teacher成功。
+添加用户的信息：user1,teacher1
+添加用户teacher1成功。
+add info:132教室,1
+add 132教室 end.
+add info:10.1.0.132终端,132教室
+add 10.1.0.132终端 end.
+add info:133教室,1
+add 133教室 end.
+add info:10.1.0.133终端,133教室
+add 10.1.0.133终端 end.
+add info:134教室,1
+add 134教室 end.
+add info:10.1.0.134终端,134教室
+add 10.1.0.134终端 end.
+add info:135教室,1
+add 135教室 end.
+add info:10.1.0.135终端,135教室
+add 10.1.0.135终端 end.
+add info:136教室,1
+add 136教室 end.
+add info:10.1.0.136终端,136教室
+add 10.1.0.136终端 end.
+add info:137教室,1
+add 137教室 end.
+add info:10.1.0.137终端,137教室
+add 10.1.0.137终端 end.
+add info:138教室,1
+add 138教室 end.
+add info:10.1.0.138终端,138教室
+add 10.1.0.138终端 end.
+add info:139教室,1
+add 139教室 end.
+add info:10.1.0.139终端,139教室
+add 10.1.0.139终端 end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_E.test_c4_addDriversData_sta.AdddriversData: 学校教室设备基础数据添加</td>
+    <td>4</td>
+    <td>4</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c40',4)">Detail</a></td>
+</tr>
+
+<tr id='pt40.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_aconfLocalInteract: 添加配置中心消息中间件</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt40.1')" >
+        pass</a>
+
+    <div id='div_pt40.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt40.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt40.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+add info:10.1.41.56,8080,顶级消息中间件,80d0d5ec-9dad-4ec3-87ce-b4d2cf25ec2c
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt40.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_MCUequipments: 添加MCU</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt40.2')" >
+        pass</a>
+
+    <div id='div_pt40.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt40.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt40.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+add info:85mcu,10.1.0.85,POLYCOM,POLYCOM
+add 85mcu end.
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt40.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_confMCU: 配置节点中间件_MCU</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt40.3')" >
+        pass</a>
+
+    <div id='div_pt40.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt40.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt40.3: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt40.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_confdriver: 配置节点中间件_设备</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt40.4')" >
+        pass</a>
+
+    <div id='div_pt40.4' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt40.4').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt40.4: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_E.test_c5_addlesson_sta.AddLessonMgr: 添加课节</td>
+    <td>2</td>
+    <td>2</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c41',2)">Detail</a></td>
+</tr>
+
+<tr id='pt41.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_hdk: 添加互动课</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt41.1')" >
+        pass</a>
+
+    <div id='div_pt41.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt41.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt41.1: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt41.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_add_jpk: 添加精品课堂</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt41.2')" >
+        pass</a>
+
+    <div id='div_pt41.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt41.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt41.2: loginfo:
+user:hnsadmin，platform:河南省教育局
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr class='passClass'>
+    <td>level_F.test_upload_sta.uploadfile: 调用上传文件</td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c42',1)">Detail</a></td>
+</tr>
+
+<tr id='pt42.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_file</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt42.1')" >
+        pass</a>
+
+    <div id='div_pt42.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_pt42.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+pt42.1: http://10.1.41.30:9997?addr=10.1.41.56&amp;media=10.1.41.57&amp;email=wangfm@3bu.cn,duanzy@3bu.cn,xiahao@3bu.cn,shiyn@3bu.cn
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='total_row'>
+    <td>Total</td>
+    <td>122</td>
+    <td>118</td>
+    <td>2</td>
+    <td>2</td>
+    <td>&nbsp;</td>
+</tr>
+</table>
+
+<div id='ending'>&nbsp;</div>
+
+</body>
+</html>

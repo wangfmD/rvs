@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.css"> <link rel="stylesheet" href="css/offscanvas.css">
+    <script type="text/javascript" src="assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <!-- <link rel="icon" href="data:image/ico;base64,aWNv"> -->
+</head>
+
+<body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- <a class="navbar-brand" href="#">自动化管理</a> -->
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="index.html">首页</a></li>
+                    <li><a href="reports.html">测试报告查询</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">版本查询 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="verplatform.html">管理平台</a></li>
+                            <li><a href="vermedia.html">流媒体平台</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </nav>
+
+
+    <div class="container">
+        <h4>管理平台镜像版本查询</h4>
+        <HR SIZE=5>
+        <div class="pull-left col-md-3"">
+            <button type="button" class="btn btn-primary" onclick="getversions()">查询全部</button>
+        </div>
+        <div class="pull-right col-md-3">
+            <span><p>查询单个:</p></span>
+            <select class="form-control input-sm" id="select_addr" name="22">
+                <option value="">请选择</option>
+            </select>
+        </div>
+    </div>
+    <!-- <HR > -->
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">版本信息</div>
+            <table id="caselist" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>模块名称</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan='3' align='center'>请查询！</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="dataTable">
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+ var host = 'http://' + window.location.host
+ $(function() {
+     // getversion()
+     setSelect();
+     onchangeSelect();
+ });
+
+ function getversion() {
+     var txt = $("#addr").val();
+     if (txt != "") {
+         getversionBySSH(txt);
+     }
+
+ }
+
+ function onchangeSelect() {
+     $("#select_addr").change(function() {
+         var checkValue = $("#select_addr").val();
+         getversionBySSH(checkValue)
+         alert("正在查询...    \n请确认！");
+     });
+ }
+
+ function setSelect() {
+     $.ajax({
+         url: host + "/api/v1/getselects",
+         async: false,
+         dataType: "json",
+         type: "get",
+         contentType: "application/x-www-form-urlencoded",
+         success: function(res) {
+             var addrs = res["addrs"]
+             for (var i = 0; i < addrs.length; i++) {
+                 var option = ""
+                 option = '<option value=' + addrs[i] + '>' + addrs[i] + '</option>'
+                 $("#select_addr").append(option)
+             }
+         }
+     });
+ }
+
+ function getversions() {
+     var uri = host + "/api/v1/getvs"
+     $.ajax({
+         url: uri,
+         async: false,
+         dataType: "json",
+         type: "get",
+         contentType: "application/x-www-form-urlencoded",
+         success: function(res) {
+             var text = "";
+             var headText = "";
+             var ver = res.versions
+             for (var k in ver[0]) {
+                 if (k != "serveraddr" && k != "id") {
+                     text += '<tr><td>' + k
+                 }
+                 for (var i = 0; i < ver.length; i++) {
+                     if (k != "serveraddr" && k != "id") {
+                         text += '</td><td>' + ver[i][k]
+                     }
+                 }
+             }
+             text += '</td></tr>'
+             headText += '<tr><th>模块名称</th>'
+             for (var i = 0; i < ver.length; i++) {
+                 headText += '<th>' + ver[i]["serveraddr"] + '</th>'
+             }
+             headText += '</tr>'
+             $("#caselist tbody").html(text);
+             $("#caselist thead").html(headText);
+
+         }
+     });
+     compareSetColor(1);
+
+ }
+
+ /* function compareSetColor() {
+
+  *     $("#caselist tbody tr").each(function() {
+  *         var $td1 = $($(this).find("td")[1]);
+  *         var $td2 = $($(this).find("td")[2]);
+  *         if ($td1.text() == $td2.text()) {
+  *             $td1.css("color", "blue");
+  *             $td2.css("color", "blue");
+  *         }
+  *     });
+  * }
+  */
+
+
+ function compareSetColor(index) {
+     $("#caselist tbody tr").each(function() {
+         var _tds = $(this).find("td"),
+             _tempText = _tds[index] ? $(_tds[index]).text() : '',
+             _count = 0;
+         for(var i = 0; i < _tds.length; i++) {
+             if($(_tds[i]).text() == _tempText && i != index) {
+                 $(_tds[i]).css('color', 'blue');
+                 _count++;
+             }
+         }
+         if(_count > 0) {
+             $(_tds[index]).css('color', 'blue');
+         }
+     });
+ }
+
+
+ function getversionBySSH(param) {
+     var uri = host + "/api/v1/get/" + param
+     $.ajax({
+         url: uri,
+         async: false,
+         dataType: "json",
+         type: "get",
+         contentType: "application/x-www-form-urlencoded",
+         success: function(res) {
+             console.log(res)
+             var headText = "";
+             headText += '<tr><th>模块名称</th>'
+             headText += '<th>' + param + '</th>'
+             headText += '</tr>'
+             $("#caselist thead").html(headText);
+             var text = "";
+             var ver = res.msg
+             for (var k in ver) {
+                 console.log(k, ":", ver[k])
+                 text += '<tr><td>' + k + '</td><td>' + ver[k] + '</td></tr>'
+             }
+             $("#caselist tbody").html(text);
+             /* alert("正在查询... \n请确认！ ");*/
+             if (res.status=='failed'){
+                 alert(res.err);
+             }
+         }
+     });
+ }
+
+ function getApiVersion() {
+     $.ajax({
+         url: host + "/api/v1/getversion",
+         async: false,
+         dataType: "json",
+         type: "get",
+         contentType: "application/x-www-form-urlencoded",
+         success: function(res) {
+             console.log("yes")
+             var text = "";
+             var ver = res.version
+             for (var k in ver) {
+                 console.log(k, ":", ver[k])
+                 text += '<tr><td>' + k + '</td><td>' + ver[k] + '</td></tr>'
+             }
+             $("#caselist tbody").html(text);
+         }
+     });
+ }
+</script>
+
+</html>

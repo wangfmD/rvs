@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/offscanvas.css">
+    <script type="text/javascript" src="assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+</head>
+
+<body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- <a class="navbar-brand" href="#">自动化管理</a> -->
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="index.html">首页</a></li>
+                    <li><a href="reports.html">测试报告查询</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">版本查询 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="verplatform.html">管理平台</a></li>
+                            <li><a href="vermedia.html">流媒体平台</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </nav>
+
+
+
+    <div class="container">
+        <!-- <div class="input-group pull-right col-md-3"> -->
+        <!-- <input type="text" class="form-control" placeholder="输入搜索内容"> -->
+        <!-- <span class="input-group-btn"> -->
+        <!-- <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button> -->
+        <!-- </span> -->
+        <!-- </div> -->
+    </div>
+
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">测试报告信息</div>
+            <table id="caselist" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>名称</th>
+                        <th>执行时间(秒)</th>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
+                        <th>类型</th>
+                        <th>状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>无</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="dataTable">
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+ var host = 'http://' + window.location.host
+
+ $(function() {
+     //alert("ddd");
+     getl();
+     //         getime("Fri, 13 Oct 2017 17:12:31 GMT", "Fri, 13 Oct 2017 17:13:36 GMT");
+ });
+
+ function getl() {
+     $.ajax({
+         url: host+"/api/v1/getinfo",
+         async: false,
+         dataType: "json",
+         /* json: "callback",*/
+         type: "get",
+         contentType: "application/x-www-form-urlencoded",
+         success: function(res) {
+             console.log(res)
+             var text = "";
+             if (null == res) {
+                 text += "<tr >";
+                 text += "<td colspan='3' align='center'>无数据</td>";
+                 text += "</tr>";
+             } else {
+                 console.log(res)
+                 for (var i = 0; i < res.caseInfots.length; i++) {
+                     duration = getime(res.caseInfots[i].START_TIME, res.caseInfots[i].STOP_TIME)
+                     console.log(res.caseInfosts);
+                     report = "report/" + res.caseInfots[i].REPORT_PATH;
+                     if (res.caseInfots[i].TYPE == 1) {
+                         type = "web";
+                     } else if (res.caseInfots[i].TYPE == 0) {
+                         type = "互动课";
+                     } else {
+                         type = "其他"
+                     }
+                     if (res.caseInfots[i].STATUS == 0) {
+                         status = "执行中"
+                     } else if (res.caseInfots[i].STATUS == 1) {
+                         status = "结束"
+                     } else {
+                         status = "异常"
+                     }
+                     text += '<tr><td>' + res.caseInfots[i].ID + '</td><td><a href="' + report + '">' + res.caseInfots[i].CASE_NAME + '</a></td><td>' + duration + '</td><td>' + res.caseInfots[i].START_TIME + '</td><td>' + res.caseInfots[i].STOP_TIME + '</td><td>' + type + '</td><td>' + status + '</td></tr>';
+                 }
+             }
+             //        $(#caselist tbody).html(text);
+             $("#caselist tbody").html(text);
+
+         }
+     });
+ }
+
+ function getime(start, stop) {
+     var starttime = new Date(start);
+     var stoptime = new Date(stop);
+     du = (stoptime - starttime) / 1000;
+     console.log(starttime);
+     console.log(stoptime);
+     console.log(du);
+     return du
+ }
+</script>
+
+</html>

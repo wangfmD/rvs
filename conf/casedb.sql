@@ -34,6 +34,7 @@ CREATE TABLE `case_info` (
   `ID` varchar(36) NOT NULL,
   `CASE_NAME` varchar(255) DEFAULT NULL COMMENT '执行名称',
   `REPORT_PATH` varchar(255) DEFAULT NULL COMMENT '说明',
+  `exec_version` varchar(255) DEFAULT NULL COMMENT '执行版本',
   `TYPE` tinyint(4) DEFAULT '0' COMMENT '0：，1：，2：，3：',
   `STATUS` tinyint(4) DEFAULT '0' COMMENT '0：开始，1：执行中，2：结束，3：异常',
   `START_TIME` datetime DEFAULT NULL COMMENT '数据时间',

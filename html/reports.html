@@ -32,6 +32,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">版本查询 <span class="caret"></span></a>
                         <ul class="dropdown-menu">
+                            <li><a href="vertagdiff.html">测试发布版本查询</a></li>
                             <li><a href="verplatform.html">管理平台</a></li>
                             <li><a href="vermedia.html">流媒体平台</a></li>
                         </ul>
@@ -61,6 +62,7 @@
                     <tr>
                         <th>序号</th>
                         <th>名称</th>
+                        <th>环境版本</th>
                         <th>执行时间(秒)</th>
                         <th>开始时间</th>
                         <th>结束时间</th>
@@ -77,6 +79,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td></td>
                     </tr>
                 </tbody>
             </table>
@@ -84,6 +87,43 @@
         <div class="dataTable">
         </div>
     </div>
+
+
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">测试环境版本信息</h4>
+                </div>
+                <div class="modal-body">
+                    <table id="modalVersionid" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>模块</th>
+                                <th>版本</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>无</td>
+                                <td></td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 <script type="text/javascript">
  var host = 'http://' + window.location.host
@@ -92,11 +132,33 @@
      //alert("ddd");
      getl();
      //         getime("Fri, 13 Oct 2017 17:12:31 GMT", "Fri, 13 Oct 2017 17:13:36 GMT");
+     //spanOnClick();
  });
+
+ function spanOnClick(e) {
+     var verid=$(e).attr("data-verid");
+     console.log("verid:",verid)
+     $.ajax({
+         url: host + "/api/v1/getcasevers/" + verid,
+         async: false,
+         dataType: "json",
+         type: "get",
+         contentType: "application/x-www-form-urlencoded",
+         success: function(res) {
+
+             var result = res.result;
+             var txt = "";
+             for (k in result["platform"]) {
+                 txt += '<tr><td>' + k + '</td><td>' + result["platform"][k] + '</td></tr>';
+             }
+             $("#modalVersionid tbody").html(txt)
+         }
+     });
+ }
 
  function getl() {
      $.ajax({
-         url: host+"/api/v1/getinfo",
+         url: host + "/api/v1/getinfo",
          async: false,
          dataType: "json",
          /* json: "callback",*/
@@ -129,7 +191,8 @@
                      } else {
                          status = "异常"
                      }
-                     text += '<tr><td>' + res.caseInfots[i].ID + '</td><td><a href="' + report + '">' + res.caseInfots[i].CASE_NAME + '</a></td><td>' + duration + '</td><td>' + res.caseInfots[i].START_TIME + '</td><td>' + res.caseInfots[i].STOP_TIME + '</td><td>' + type + '</td><td>' + status + '</td></tr>';
+
+                     text += '<tr><td>' + res.caseInfots[i].ID + '</td><td><a href="' + report + '">' + res.caseInfots[i].CASE_NAME + '</a></td><td>' + '<span data-toggle="modal" data-target="#myModal" id="versionid" onclick="spanOnClick(this)" data-verid=' + res.caseInfots[i].exec_version + '>version</span>' + '</td><td>' + duration + '</td><td>' + res.caseInfots[i].START_TIME + '</td><td>' + res.caseInfots[i].STOP_TIME + '</td><td>' + type + '</td><td>' + status + '</td></tr>';
                  }
              }
              //        $(#caselist tbody).html(text);

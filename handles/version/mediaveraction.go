@@ -69,6 +69,55 @@ func QueryMediaServerAddrs(c *gin.Context) {
 	})
 }
 
+// 执行用例时插入server_version表的版本信息
+func SqlAddMediaVersionByExecCase(id string, addr string, m map[string]string) error {
+	db, err := sql.Open("mysql", "root:123456@tcp(localhost:3306)/casedb?charset=utf8")
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+
+	// delete from server_version where id='last';
+	// sql_del := `delete from server_version where id='last' and serveraddr=?`
+	// _, err = db.Exec(sql_del, addr)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// 	return err
+	// }
+
+	sql := `
+   INSERT INTO server_version
+	  (id,
+      serveraddr,
+	  type,
+	  filesrv,
+	  ftp,
+	  mbs,
+	  nginx,
+	  update_time)
+	VALUES(?,?,?,?,?,?,?,now());`
+
+	rs, err := db.Exec(sql, id, addr, "media", m["filesrv"], m["ftp"], m["mbs"], m["nginx"])
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+
+	i, err := rs.LastInsertId()
+	log.Println(i)
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+
+	err = db.Close()
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+	return nil
+}
+
 func sqlAddMediaversion(addr string, m map[string]string) error {
 	db, err := sql.Open("mysql", "root:123456@tcp(localhost:3306)/casedb?charset=utf8")
 	if err != nil {

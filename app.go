@@ -20,6 +20,7 @@ func main() {
 	router.GET("/api/v1/get/:addr", version.AddVersion)
 	router.GET("/api/v1/getvs", version.QueryVersion)
 	router.GET("/api/v1/getselects", version.QueryServerAddrs)
+	router.GET("/api/v1/getcasevers/:versionid", version.QueryVersionById)
 
 	router.GET("/api/v1/getmedia/:addr", version.AddMediaVersion)
 	router.GET("/api/v1/getmediaselects", version.QueryMediaServerAddrs)

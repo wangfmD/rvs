@@ -15,7 +15,9 @@ type ServerOs struct {
 
 // GetPlatformAddrs ...
 func GetPlatformAddrs() []*ServerOs {
-	cfg, err := goconfig.LoadConfigFile("conf/app.ini")
+	cfg, err := goconfig.LoadConfigFile("/opt/gopath/src/github.com/wangfmD/rvs/conf/app.ini")
+	// cfg, err := goconfig.LoadConfigFile("conf/app.ini")
+
 	if err != nil {
 		fmt.Println("Fail to load configuration file: " + err.Error())
 		os.Exit(2)
@@ -39,7 +41,8 @@ func GetPlatformAddrs() []*ServerOs {
 }
 
 func GetMediaAddrs() []*ServerOs {
-	cfg, err := goconfig.LoadConfigFile("conf/app.ini")
+	cfg, err := goconfig.LoadConfigFile("/opt/gopath/src/github.com/wangfmD/rvs/conf/app.ini")
+	// cfg, err := goconfig.LoadConfigFile("conf/app.ini")
 	if err != nil {
 		fmt.Println("Fail to load configuration file: " + err.Error())
 		os.Exit(2)

@@ -3,10 +3,14 @@ package report
 import (
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/satori/go.uuid"
+	"github.com/wangfmD/rvs/handles/version"
+	"github.com/wangfmD/rvs/setting"
+	"github.com/wangfmD/rvs/sshv"
 	"log"
 	"net/http"
 	"time"
@@ -21,6 +25,8 @@ type case_info_t struct {
 	StartTime  time.Time `json:"START_TIME"`
 	StopTime   time.Time `json:"STOP_TIME"`
 	Duration   string    `json:"DURATION"`
+	Mid        string    `json:"maddr"`
+	Pid        string    `json:"paddr"`
 }
 
 func GetApi(c *gin.Context) {
@@ -69,9 +75,65 @@ func UpdateInfo(c *gin.Context) {
 
 }
 
-func AddCaseInfo(c *gin.Context) {
+//根据ip匹配cfg的配置的用户名，密码
+func getServerPl(addr string) (*setting.ServerOs, error) {
+	p := setting.GetPlatformAddrs()
+	for _, v := range p {
+		if v.Addr == addr {
+			return v, nil
+		}
+	}
+	return nil, errors.New("error address")
+}
 
-	var id string
+//根据ip匹配cfg的配置的用户名，密码
+func getServerMe(addr string) (*setting.ServerOs, error) {
+	p := setting.GetMediaAddrs()
+	for _, v := range p {
+		if v.Addr == addr {
+			return v, nil
+		}
+	}
+	return nil, errors.New("error address")
+}
+
+//执行用例时ssh查询版本并入库
+func sSHSqlAddPlatformvers(id, addr string) {
+	server, err := getServerPl(addr)
+
+	if err != nil {
+		log.Println(err)
+	} else {
+		versMap, err := sshv.GetVersionMaps(server.Name, server.Pwd, addr)
+		if err != nil {
+			log.Println(err)
+		} else {
+			version.SqlAddVersionByExecCase(id, addr, versMap)
+		}
+	}
+	log.Println("exec case: insert platform version to db")
+
+}
+
+//执行用例时ssh查询版本并入库
+func sSHSqlAddMediavers(id, addr string) {
+	server, err := getServerMe(addr)
+	if err != nil {
+		log.Println(err)
+	} else {
+		versMap, err := sshv.GetVersionMaps(server.Name, server.Pwd, addr)
+		if err != nil {
+			log.Println(err)
+		} else {
+			version.SqlAddMediaVersionByExecCase(id, addr, versMap)
+		}
+	}
+	log.Println("exec case: insert media version to db")
+}
+
+//执行用例时插入执行信息
+func AddCaseInfo(c *gin.Context) {
+	var id, reportId, mid, pid string
 	var caseName string
 	// var reportPath string
 	var caseType int
@@ -86,9 +148,13 @@ func AddCaseInfo(c *gin.Context) {
 		// err := c.MustBindWith(&ci, binding.JSON)
 		// err := binding.JSON.Bind(c.Request, &ci)
 		// id = caseinfo.Id
-		caseName = caseinfo.Name
 		// reportPath = caseinfo.ReportPath
 		caseType = caseinfo.Type
+		caseName = caseinfo.Name
+		log.Println("caseType:", caseType)
+		log.Println("casename:", caseName)
+		pid = caseinfo.Pid
+		mid = caseinfo.Mid
 		log.Println(id)
 		log.Println(caseName)
 		// log.Println(reportPath)
@@ -96,10 +162,22 @@ func AddCaseInfo(c *gin.Context) {
 		CheckErr(err)
 	}
 
+	uuid2 := uuid.NewV4()
+	reportId = uuid2.String()
+	log.Println("pid: ", pid)
+	if pid != "" {
+		go sSHSqlAddPlatformvers(reportId, pid)
+	}
+
+	log.Println("mid: ", mid)
+	if mid != "" {
+		go sSHSqlAddMediavers(reportId, mid)
+	}
+
 	db, err := sql.Open("mysql", "root:123456@tcp(localhost:3306)/casedb?charset=utf8")
 	CheckErr(err)
-	sql := "INSERT INTO `case_info` (`ID`, `CASE_NAME`, `REPORT_PATH`, `TYPE`, `STATUS`, `START_TIME`, `STOP_TIME`) VALUES(?,?,'/opt',?,0,now(),now())"
-	rs, err := db.Exec(sql, id, caseName, caseType)
+	sql := "INSERT INTO `case_info` (`ID`, `CASE_NAME`, `REPORT_PATH`,`EXEC_VERSION`, `TYPE`, `STATUS`, `START_TIME`, `STOP_TIME`) VALUES(?,?,'/opt',?,?,0,now(),now())"
+	rs, err := db.Exec(sql, id, caseName, reportId, caseType)
 	CheckErr(err)
 	i, err := rs.LastInsertId()
 	CheckErr(err)

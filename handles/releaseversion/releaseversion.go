@@ -99,7 +99,8 @@ func queryVersByIps(vid string) map[string]string {
 			  nginx,
 			  openfire,
 			  redis,
-			  middledatabase
+			  middledatabase,
+			  update_time
 		  FROM server_version
 		  WHERE id="last" and serveraddr=?`
 	rows, err := db.Query(sql, vid)
@@ -159,7 +160,8 @@ func queryTagVers(vid string) map[string]string {
 			  nginx,
 			  openfire,
 			  redis,
-			  middledatabase
+			  middledatabase,
+			  update_time
 		  FROM version_tag
 		  WHERE versionid=?`
 	rows, err := db.Query(sql, vid)

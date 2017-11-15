@@ -32,8 +32,16 @@ func HandleUpdateTagvers(c *gin.Context) {
 func HandleQueryDiffVers(c *gin.Context) {
 	tag := c.PostForm("tag")
 	addr := c.PostForm("addr")
-	releaseVers := queryTagVers(tag)
-	actualVers := queryVersByIps(addr)
+	queryType := c.PostForm("type")
+	var releaseVers = make(map[string]string)
+	var actualVers = make(map[string]string)
+	if queryType == "platform" {
+		releaseVers = queryTagVers(tag)
+		actualVers = queryVersByIps(addr)
+	} else {
+		releaseVers = queryMediaTagVers(tag)
+		actualVers = queryMediaVersByIps(addr)
+	}
 	contentArrs := make([]map[string]string, 0)
 	contentArrs = append(contentArrs, releaseVers)
 	contentArrs = append(contentArrs, actualVers)
@@ -137,6 +145,51 @@ func queryVersByIps(vid string) map[string]string {
 	return record
 }
 
+func queryMediaVersByIps(vid string) map[string]string {
+	db, err := sql.Open("mysql", "root:123456@tcp(localhost:3306)/casedb?charset=utf8")
+	checkErr(err)
+	sql := `SELECT
+			  filesrv,
+			  ftp,
+			  mbs,
+			  nginx,
+			  update_time
+		  FROM server_version
+		  WHERE id="last" and serveraddr=?`
+	rows, err := db.Query(sql, vid)
+
+	checkErr(err)
+	columns, _ := rows.Columns()
+
+	scanArgs := make([]interface{}, len(columns))
+	values := make([]interface{}, len(columns))
+	for i := range values {
+		scanArgs[i] = &values[i]
+	}
+
+	// resMap := make(map[string]map[string]string)
+
+	record := make(map[string]string)
+
+	for rows.Next() {
+		err = rows.Scan(scanArgs...)
+		for i, col := range values {
+			if col != nil {
+				record[columns[i]] = string(col.([]byte))
+			} else {
+				record[columns[i]] = ""
+			}
+
+		}
+		record["versiontag"] = vid
+		// resMap[vid] = record
+	}
+	db.Close()
+	// return resMap
+	log.Println(record)
+	return record
+}
+
 // queryTagvers ...
 func queryTagVers(vid string) map[string]string {
 	db, err := sql.Open("mysql", "root:123456@tcp(localhost:3306)/casedb?charset=utf8")
@@ -161,6 +214,45 @@ func queryTagVers(vid string) map[string]string {
 			  openfire,
 			  redis,
 			  middledatabase,
+			  update_time
+		  FROM version_tag
+		  WHERE versionid=?`
+	rows, err := db.Query(sql, vid)
+
+	checkErr(err)
+	columns, _ := rows.Columns()
+
+	scanArgs := make([]interface{}, len(columns))
+	values := make([]interface{}, len(columns))
+	for i := range values {
+		scanArgs[i] = &values[i]
+	}
+
+	// resMap := make(map[string]map[string]string)
+
+	record := make(map[string]string)
+	for rows.Next() {
+		err = rows.Scan(scanArgs...)
+		for i, col := range values {
+			if col != nil {
+				record[columns[i]] = string(col.([]byte))
+			}
+		}
+		record["versiontag"] = vid
+	}
+	db.Close()
+	// return resMap
+	return record
+}
+
+func queryMediaTagVers(vid string) map[string]string {
+	db, err := sql.Open("mysql", "root:123456@tcp(localhost:3306)/casedb?charset=utf8")
+	checkErr(err)
+	sql := `SELECT
+			  filesrv,
+			  ftp,
+			  mbs,
+			  nginx,
 			  update_time
 		  FROM version_tag
 		  WHERE versionid=?`

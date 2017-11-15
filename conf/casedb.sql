@@ -32,16 +32,15 @@ CREATE TABLE `server_version` (
 DROP TABLE IF EXISTS `case_info`;
 CREATE TABLE `case_info` (
   `ID` varchar(36) NOT NULL,
-  `CASE_NAME` varchar(255) DEFAULT NULL COMMENT '执行名称',
-  `REPORT_PATH` varchar(255) DEFAULT NULL COMMENT '说明',
-  `exec_version` varchar(255) DEFAULT NULL COMMENT '执行版本',
-  `TYPE` tinyint(4) DEFAULT '0' COMMENT '0：，1：，2：，3：',
-  `STATUS` tinyint(4) DEFAULT '0' COMMENT '0：开始，1：执行中，2：结束，3：异常',
-  `START_TIME` datetime DEFAULT NULL COMMENT '数据时间',
-  `STOP_TIME` datetime DEFAULT NULL COMMENT '数据时间',
-  `DURATION` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用例执行概要 表';
+  `CASE_NAME` varchar(255) DEFAULT NULL,
+  `REPORT_PATH` varchar(255) DEFAULT NULL,
+  `exec_version` varchar(255) DEFAULT NULL,
+  `TYPE` tinyint(4) DEFAULT '0',
+  `STATUS` tinyint(4) DEFAULT '0',
+  `START_TIME` datetime DEFAULT NULL,
+  `STOP_TIME` datetime DEFAULT NULL,
+  `DURATION` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `version_tag`;
 CREATE TABLE `version_tag` (

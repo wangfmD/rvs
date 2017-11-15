@@ -61,8 +61,8 @@
             <span><p>请选择平台:</p></span>
             <select class="form-control input-sm" id="select_type" name="22">
                     <option value="0">请选择</option>
-                    <option value="1">管理平台</option>
-                    <option value="2">流媒体平台</option>
+                    <option value="platform">管理平台</option>
+                    <option value="media">流媒体平台</option>
 
                 </select>
         </div>
@@ -72,11 +72,14 @@
                     <option value="">请选择</option>
                 </select>
         </div>
-
         <div class="full-right" style="margin-top:48px">
-            <button type="button" class="btn btn-primary" onclick="getDiffVersions()">查询全部</button>
+            <button type="button" class="btn btn-primary " onclick="getDiffVersions()">查询全部</button>
+            <button type="button" class="btn btn-primary" onclick="dockerUpdate()">升级</button>
+            <button type="button" class="btn btn-primary" onclick="shhQuery()">SSH查询</button>
         </div>
 
+    </div>
+    <div class="container">
 
     </div>
     <!-- <HR > -->
@@ -105,10 +108,21 @@
 
     $(function() {
         // getversion()
-        setAddrSelect();
         setTagsSelect();
-        onchangeSelectTags()
+        onchangeSelectTags();
+        onchangeSelectType();
     });
+
+    function onchangeSelectType() {
+        $("#select_type").change(function() {
+            var type = $("#select_type").val()
+            if (type == "platform") {
+                setAddrSelect('platform')
+            } else if (type == "media") {
+                setAddrSelect('media')
+            }
+        });
+    }
 
     function onchangeSelectTags() {
 
@@ -155,28 +169,50 @@
     }
 
 
-    function setAddrSelect() {
-        $.ajax({
-            url: host + "/api/v1/getselects",
-            async: false,
-            dataType: "json",
-            type: "get",
-            contentType: "application/x-www-form-urlencoded",
-            success: function(res) {
-                var addrs = res["addrs"]
-                for (var i = 0; i < addrs.length; i++) {
-                    var option = ""
-                    option = '<option value=' + addrs[i] + '>' + addrs[i] + '</option>'
-                    $("#select_addr").append(option)
+    function setAddrSelect(type) {
+
+        if (type == 'platform') {
+            $.ajax({
+                url: host + "/api/v1/getselects",
+                async: false,
+                dataType: "json",
+                type: "get",
+                contentType: "application/x-www-form-urlencoded",
+                success: function(res) {
+                    var addrs = res["addrs"]
+                    var option = '<option value="">请选择</option>'
+
+                    for (var i = 0; i < addrs.length; i++) {
+                        option += '<option value=' + addrs[i] + '>' + addrs[i] + '</option>'
+                    }
+                    $("#select_addr").html(option)
                 }
-            }
-        });
+            });
+        } else {
+            $.ajax({
+                url: host + "/api/v1/getmediaselects",
+                async: false,
+                dataType: "json",
+                type: "get",
+                contentType: "application/x-www-form-urlencoded",
+                success: function(res) {
+                    var addrs = res["addrs"]
+                    var option = '<option value="">请选择</option>'
+
+                    for (var i = 0; i < addrs.length; i++) {
+                        option += '<option value=' + addrs[i] + '>' + addrs[i] + '</option>'
+                    }
+                    $("#select_addr").html(option)
+                }
+            });
+        }
     }
 
     function getDiffVersions() {
         var uri = host + "/api/v1/querydiffv"
-        var addr = $("#select_addr").val()
-        var tag = $("#select_tags").val()
+        var addr = $("#select_addr").val();
+        var tag = $("#select_tags").val();
+        var type = $("#select_type").val();
         if (addr == "") {
             alert("请选择发布版本");
         }
@@ -191,7 +227,8 @@
             contentType: "application/x-www-form-urlencoded",
             data: {
                 tag: tag,
-                addr: addr
+                addr: addr,
+                type: type
             },
             success: function(res) {
                 if (res.status == "success") {
@@ -212,6 +249,7 @@
                     }
                     $("#caselist tbody").html(txt);
                     $("#caselist thead").html(txthead);
+                    tableOnClick();
 
                 }
             }
@@ -299,6 +337,93 @@
                     text += '<tr><td>' + k + '</td><td>' + ver[k] + '</td></tr>'
                 }
                 $("#caselist tbody").html(text);
+            }
+        });
+    }
+
+    function tableOnClick() {
+        console.log("tableOnClick..")
+        $('#caselist tbody tr').click(function() {
+            if ($(this).hasClass("success")) {
+                $(this).removeClass("success")
+            } else {
+                $(this).addClass("success")
+            }
+        });
+    }
+
+    function dockerUpdate() {
+        var thLength = $("#caselist thead th").length;
+        if (thLength != 3) {
+            alert("请选择服务器")
+            return
+        }
+        var host = $("#caselist thead th:eq(2)").html();
+        //if (host=='10.1.41.56'||host=='10.1.41.60'||host=='10.1.41.20'||host=='10.1.62.3'){
+        if (host == '10.1.41.56' || host == '10.1.41.60' || host == '10.1.41.20') {
+            var obj = {};
+            $("#caselist tr.success").each(function() {
+                var eq1 = $(this).find("td").eq(0);
+                var eq2 = $(this).find("td").eq(1);
+                obj[eq1.text()] = eq2.text()
+            })
+            console.log(obj)
+            /* obj = JSON.stringify(obj);*/
+            $.ajax({
+                /* url:"http://10.1.41.201:8019/update",*/
+                url: "http://" + host + ":8019/update",
+                async: false,
+                dataType: "json",
+                type: "post",
+                contentType: "application/x-www-form-urlencoded",
+                /* contentType: "application/json",*/
+                data: obj,
+                success: function(res) {
+                    console.log(res)
+                }
+            });
+        }
+
+    }
+
+    function shhQuery() {
+        var serverHost = $("#select_addr").val();
+        var type = $("#select_type").val();
+        console.log(serverHost)
+        if (serverHost == "") {
+            alert("请选择服务器！")
+        } else {
+            if (type == "platform") {
+                getversionBySSH(serverHost)
+            } else {
+                getMediaVersionBySSH(serverHost)
+            }
+        }
+    }
+
+    function getMediaVersionBySSH(param) {
+        var uri = host + "/api/v1/getmedia/" + param
+        $.ajax({
+            url: uri,
+            async: false,
+            dataType: "json",
+            type: "get",
+            contentType: "application/x-www-form-urlencoded",
+            success: function(res) {
+                console.log(res)
+                var headText = "";
+                headText += '<tr><th>模块名称</th>'
+                headText += '<th>' + param + '</th>'
+                headText += '</tr>'
+                $("#caselist thead").html(headText);
+                var text = "";
+                var ver = res.msg
+                for (var k in ver) {
+                    console.log(k, ":", ver[k])
+                    text += '<tr><td>' + k + '</td><td>' + ver[k] + '</td></tr>'
+                }
+                $("#caselist tbody").html(text);
+
             }
         });
     }

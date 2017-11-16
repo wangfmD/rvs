@@ -344,10 +344,15 @@
     function tableOnClick() {
         console.log("tableOnClick..")
         $('#caselist tbody tr').click(function() {
-            if ($(this).hasClass("success")) {
-                $(this).removeClass("success")
-            } else {
-                $(this).addClass("success")
+            var td0 = $(this).find("td:eq(1)").text();
+            var td1 = $(this).find("td:eq(2)").text();
+            if (td0 != "" && td1 != "") {
+                if ($(this).hasClass("success")) {
+                    $(this).removeClass("success");
+                } else {
+                    $(this).addClass("success");
+
+                }
             }
         });
     }

@@ -74,7 +74,7 @@
         </div>
         <div class="full-right" style="margin-top:48px">
             <button type="button" class="btn btn-primary " onclick="getDiffVersions()">查询全部</button>
-            <button type="button" class="btn btn-primary" onclick="dockerUpdate()">升级</button>
+            <button type="button" class="btn btn-primary" onclick="dockerUpdate()" id="upgrade_id">升级</button>
             <button type="button" class="btn btn-primary" onclick="shhQuery()">SSH查询</button>
         </div>
 
@@ -219,6 +219,7 @@
         if (tag == "") {
             alert("请选择服务器");
         }
+        $("#upgrade_id").text("升级")
         $.ajax({
             url: uri,
             async: false,
@@ -254,7 +255,7 @@
                 }
             }
         });
-        console.log("test2");
+        //console.log("test2");
         compareSetColor(1);
 
     }
@@ -342,7 +343,7 @@
     }
 
     function tableOnClick() {
-        console.log("tableOnClick..")
+        //console.log("tableOnClick..")
         $('#caselist tbody tr').click(function() {
             var td0 = $(this).find("td:eq(1)").text();
             var td1 = $(this).find("td:eq(2)").text();
@@ -364,6 +365,7 @@
             return
         }
         var host = $("#caselist thead th:eq(2)").html();
+        document.getElementById('upgrade_id').innerHTML = '升级中...';
         //if (host=='10.1.41.56'||host=='10.1.41.60'||host=='10.1.41.20'||host=='10.1.62.3'){
         if (host == '10.1.41.56' || host == '10.1.41.60' || host == '10.1.41.20') {
             var obj = {};
@@ -372,19 +374,25 @@
                 var eq2 = $(this).find("td").eq(1);
                 obj[eq1.text()] = eq2.text()
             })
-            console.log(obj)
-            /* obj = JSON.stringify(obj);*/
+            //console.log(obj)
+            //obj = JSON.stringify(obj);
+            
             $.ajax({
                 /* url:"http://10.1.41.201:8019/update",*/
                 url: "http://" + host + ":8019/update",
-                async: false,
+                async: true,
                 dataType: "json",
                 type: "post",
                 contentType: "application/x-www-form-urlencoded",
                 /* contentType: "application/json",*/
                 data: obj,
                 success: function(res) {
-                    console.log(res)
+                    
+                    if (res.status == 'success'){
+                        $("#upgrade_id").text("升级完成")
+                    }else{
+                        $("#upgrade_id").text("升级失败")
+                    }
                 }
             });
         }
@@ -395,6 +403,7 @@
         var serverHost = $("#select_addr").val();
         var type = $("#select_type").val();
         console.log(serverHost)
+        $("#upgrade_id").text("升级")
         if (serverHost == "") {
             alert("请选择服务器！")
         } else {

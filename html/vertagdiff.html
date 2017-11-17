@@ -367,16 +367,16 @@
         var host = $("#caselist thead th:eq(2)").html();
         document.getElementById('upgrade_id').innerHTML = '升级中...';
         //if (host=='10.1.41.56'||host=='10.1.41.60'||host=='10.1.41.20'||host=='10.1.62.3'){
-        if (1==1) {
-            var obj = {};
-            $("#caselist tr.success").each(function() {
+        var h = '10.1.41.56'
+        if (h == '10.1.41.56') {
+            var obj = {}; $("#caselist tr.success").each(function() {
                 var eq1 = $(this).find("td").eq(0);
                 var eq2 = $(this).find("td").eq(1);
                 obj[eq1.text()] = eq2.text()
             })
             //console.log(obj)
             //obj = JSON.stringify(obj);
-            
+
             $.ajax({
                 /* url:"http://10.1.41.201:8019/update",*/
                 url: "http://" + host + ":8019/update",
@@ -387,10 +387,10 @@
                 /* contentType: "application/json",*/
                 data: obj,
                 success: function(res) {
-                    
-                    if (res.status == 'success'){
+
+                    if (res.status == 'success') {
                         $("#upgrade_id").text("升级完成")
-                    }else{
+                    } else {
                         $("#upgrade_id").text("升级失败")
                     }
                 }

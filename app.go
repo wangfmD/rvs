@@ -31,6 +31,9 @@ func main() {
 	router.POST("/api/v1/querydiffv", releaseversion.HandleQueryDiffVers)
 	router.GET("/api/v1/gettags", releaseversion.HandleQueryTags)
 	router.GET("/api/v1/updatetags", releaseversion.HandleUpdateTagvers)
+	router.POST("/api/v1/addtags", version.AddTagsHandle)
+	router.POST("/api/v1/tags", version.QueryTagsHandle)
+	router.POST("/api/v1/deltags", version.DeleteHandle)
 
 	router.Run(":8009")
 }

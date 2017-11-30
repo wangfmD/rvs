@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/offscanvas.css">
+    <script type="text/javascript" src="assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <!-- <link rel="icon" href="data:image/ico;base64,aWNv"> -->
+</head>
+
+<body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                    </button>
+                <!-- <a class="navbar-brand" href="#">自动化管理</a> -->
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="index.html">首页</a></li>
+                    <li><a href="reports.html">测试报告查询</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">版本查询 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="vertagdiff.html">测试发布版本查询</a></li>
+                            <li><a href="verplatform.html">管理平台</a></li>
+                            <li><a href="vermedia.html">流媒体平台</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </nav>
+
+
+    <div class="container">
+        <h4>发布版本管理</h4>
+        <HR SIZE=5>
+        <div class="full-right" style="margin-top:48px">
+            <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#showAddModal">添加版本</button>
+            <button type="button" class="btn btn-primary" onclick="queryTags()" id="upgrade_id">查询</button>
+            <button type="button" class="btn btn-primary" onclick="deleteTags()">删除</button>
+        </div>
+
+    </div>
+    <div class="container">
+    </div>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="showAddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">测试环境版本信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="containe " id="tagsform">
+                        <!-- style="margin-top:20px; margin-left:390px" -->
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">大版本号:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="versionid" value="" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">版本详情:</label>
+                                <div class="col-sm-7">
+                                    <textarea class="form-control" rows="3" name="tags" style="width:300px; height:500px;margin-left:-35px"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="addTags()">添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="tagsInfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">测试环境版本信息</h4>
+                </div>
+                <div class="modal-body">
+                    <table id="tagTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>模块</th>
+                                <th>版本</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>无</td>
+                                <td></td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+
+    <div class="container" id="listtab">
+        <div class="panel panel-default">
+            <div class="panel-heading">版本信息</div>
+            <table id="tagslist" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>模块名称</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan='3' align='center'>请查询！</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="dataTable">
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    var host = 'http://' + window.location.host
+
+    $(function () {
+
+    });
+
+    function showAdd() {
+        /* $("#tagsform").removeClass("hidden");*/
+        var div = $("#tagsform");
+        if (div.hasClass("hidden") == true) {
+            div.removeClass("hidden");
+        } else {
+            div.addClass("hidden");
+        }
+    }
+    function addTags() {
+        var versionid = $("input").val();
+        var tags = $("textarea").val();
+        $.ajax({
+            url: host + "/api/v1/addtags",
+            dataType: "json",
+            type: "post",
+            contentType: "application/x-www-form-urlencoded",
+            data: {
+                versionid: versionid,
+                tags: tags,
+            },
+            success: function (res) {
+                console.log(res)
+            }
+        });
+    }
+
+    var tags = [];
+    function queryTags() {
+        $.ajax({
+            url: host + "/api/v1/tags",
+            dataType: "json",
+            type: "post",
+            contentType: "application/x-www-form-urlencoded",
+            data: {
+            },
+            success: function (res) {
+                console.log(res)
+                tags = res.result;
+                console.log(tags)
+                var txt = "";
+
+                for (var i = 0; i < tags.length; i++) {
+                    console.log(tags[i])
+                    console.log("dddd")
+                    txt += '<tr><td>' + (i + 1) + '</td><td><a href="#" data-toggle="modal" data-target="#tagsInfoModal" onclick="showTagsInfo(' + i + ')">' + tags[i].versionid + '</a></td></tr>'
+                }
+                $("#tagslist tbody").html(txt);
+                tableOnClick();
+            }
+        });
+    }
+
+    function showTagsInfo(i) {
+        var tagstxt = "";
+        for (k in tags[i]) {
+            tagstxt += '<tr><td>' + k + '</td><td>' + tags[i][k] + '</td></tr>';
+        }
+        $("#tagTable tbody").html(tagstxt);
+    }
+
+    function tableOnClick() {
+        //console.log("tableOnClick..")
+        $('#tagslist tbody tr').click(function () {
+            if ($(this).hasClass("success")) {
+                $(this).removeClass("success");
+            } else {
+                $(this).addClass("success");
+            }
+        });
+    }
+
+    function getTagsId() {
+        var obj = [];
+        $("#tagslist tr.success").each(function () {
+           // var eq1 = $(this).find("td").eq(0);
+            var eq2 = $(this).find("td").eq(1);
+            obj.push(eq2.text());
+        })
+        
+        return obj
+    }
+
+    function deleteTags() {
+        obj = getTagsId();
+        console.log("+++");
+        console.log(obj);
+        console.log("+++1");
+        $.ajax({
+            url: host + "/api/v1/deltags",
+            dataType: "json",
+            type: "post",
+            contentType: "application/x-www-form-urlencoded",
+            data: {
+                tagsId: JSON.stringify(obj),
+
+                // obj
+            },
+            success: function (res) {
+                console.log(res)
+            }
+        });
+    }
+
+</script>
+
+</html>

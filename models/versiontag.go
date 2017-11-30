@@ -126,6 +126,16 @@ func (this *VersionTag) DeleteOne(versionid string) bool {
 	}
 }
 
+func GetVersionIds() []VersionTag {
+	engine, err := xorm.NewEngine("mysql", "root:123456@tcp(localhost:3306)/casedb?charset=utf8")
+	this := make([]VersionTag, 0)
+	err = engine.Cols("versionid").Find(&this)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return this
+}
+
 func CheckErr(err error) {
 	if err != nil {
 		fmt.Println(err)

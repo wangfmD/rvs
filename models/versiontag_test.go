@@ -32,7 +32,14 @@ import (
 // 	fmt.Println(v.GetAll())
 // }
 
-func TestDe(t *testing.T) {
-	v := VersionTag{}
-	fmt.Println(v.DeleteOne("2"))
+// func TestDe(t *testing.T) {
+// 	v := VersionTag{}
+// 	fmt.Println(v.DeleteOne("2"))
+// }
+
+func TestGetTags(t *testing.T) {
+	tags := GetVersionIds()
+	for key, value := range tags {
+		fmt.Println(key, value.Versionid)
+	}
 }

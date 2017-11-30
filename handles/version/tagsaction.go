@@ -90,3 +90,15 @@ func DeleteHandle(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, m)
 }
+
+func GetTagsHandle(c *gin.Context) {
+	tags := make([]string, 0)
+	tagsM := models.GetVersionIds()
+	for _, value := range tagsM {
+		tags = append(tags, value.Versionid)
+	}
+	log.Println(tags)
+	c.JSON(http.StatusOK, gin.H{
+		"tags": tags,
+	})
+}

@@ -36,7 +36,7 @@ type VersionTag struct {
 	Middleclient     string `json:"middleclient"`
 	Middledriver     string `json:"middledriver"`
 	Middleresource   string `json:"middleresource"`
-	Middlewaremcu    string `json:"middleware-mcu`
+	Middlewaremcu    string `json:"middleware-mcu"`
 	Middletherepair  string `json:"middletherepair"`
 	Mysql            string `json:"mysql"`
 	Nginx            string `json:"nginx"`
